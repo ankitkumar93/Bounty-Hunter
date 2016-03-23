@@ -1,5 +1,8 @@
-package characters;
+/* Game - Bounty Hunter */
+/* Thief's AI Class for Controlling Thief */
+/* Designed By Ankit Kumar */
 
+package characters;
 
 import constants.Constants;
 import ds.Graph;

@@ -34,10 +34,15 @@ public class Graph {
 		Queue<Integer> xQueue = new LinkedList<Integer>();
 		Queue<Integer> yQueue = new LinkedList<Integer>();
 		
+		//get current position
+		int mid = (size - 1)/2;
+		int[] pos = position.getPosition();
+		int[] offset = {pos[0] - mid, pos[1] - mid};
+		
 		//add initial node and index
 		nodeQueue.add(position);
-		xQueue.add((size - 1)/2);
-		yQueue.add((size - 1)/2);
+		xQueue.add(mid);
+		yQueue.add(mid);
 		
 		//evaluate nodes till queue not empty
 		while(!nodeQueue.isEmpty()){
@@ -49,9 +54,13 @@ public class Graph {
 			if(x - 1 >= 0){
 				
 				//Init Neighbor
-				int coord[] = {x-1, y};
+				int coord[] = {x-1 + offset[0], y + offset[1]};
 				Node leftNeighbour = new Node(nodes[x-1][y], coord);
+				
+				//Add to Queue
 				nodeQueue.add(leftNeighbour);
+				xQueue.add(x-1);
+				yQueue.add(y);
 				
 				//Assign Neighbor
 				current.setNeighbour(Constants.LEFT, leftNeighbour);
@@ -61,36 +70,48 @@ public class Graph {
 			if(x + 1 < size){
 				
 				//Init Neighbor
-				int coord[] = {x-1, y};
+				int coord[] = {x+1 + offset[0], y + offset[1]};
 				Node rightNeighbour = new Node(nodes[x+1][y], coord);
+				
+				//Add to Queue
 				nodeQueue.add(rightNeighbour);
+				xQueue.add(x+1);
+				yQueue.add(y);
 				
 				//Assign Neighbor
-				current.setNeighbour(Constants.LEFT, rightNeighbour);
+				current.setNeighbour(Constants.RIGHT, rightNeighbour);
 			}
 			
 			//Top Neighbor
 			if(y - 1 <= 0){
 				
 				//Init Neighbor
-				int coord[] = {x, y-1};
+				int coord[] = {x + offset[0], y-1 + offset[1]};
 				Node topNeighbour = new Node(nodes[x][y-1], coord);
+				
+				//Add to Queue
 				nodeQueue.add(topNeighbour);
+				xQueue.add(x);
+				yQueue.add(y-1);
 				
 				//Assign Neighbor
-				current.setNeighbour(Constants.LEFT, topNeighbour);
+				current.setNeighbour(Constants.TOP, topNeighbour);
 			}
 			
 			//Bottom Neighbor
 			if(y + 1 < size){
 				
 				//Init Neighbor
-				int coord[] = {x, y+1};
+				int coord[] = {x + offset[0], y+1 + offset[1]};
 				Node bottomNeighbour = new Node(nodes[x][y+1], coord);
+				
+				//Add to Queue
 				nodeQueue.add(bottomNeighbour);
+				xQueue.add(x);
+				yQueue.add(y+1);
 				
 				//Assign Neighbor
-				current.setNeighbour(Constants.LEFT, bottomNeighbour);
+				current.setNeighbour(Constants.BOTTOM, bottomNeighbour);
 			}
 		}
 	}

@@ -108,6 +108,12 @@ public class Node {
 		}
 	}
 	
+	//Get Position of the Node
+	public int[] getPosition(){
+		int coord[] = {x, y};
+		return coord;
+	}
+	
 	/*Private Helper Functions*/
 	private int getWeight(Node node){
 		int xDiff = Math.abs(node.x - x);

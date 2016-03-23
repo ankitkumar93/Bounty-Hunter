@@ -1,3 +1,7 @@
+/* Game - Bounty Hunter */
+/* Constants Class for the Game */
+/* Designed By Ankit Kumar */
+
 package constants;
 
 public class Constants {

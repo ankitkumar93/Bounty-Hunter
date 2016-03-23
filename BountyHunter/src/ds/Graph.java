@@ -7,6 +7,8 @@ package ds;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import constants.Constants;
+
 //Implement the Class
 public class Graph {
 	
@@ -45,30 +47,50 @@ public class Graph {
 			
 			//Left Neighbor
 			if(x - 1 >= 0){
+				
+				//Init Neighbor
 				int coord[] = {x-1, y};
 				Node leftNeighbour = new Node(nodes[x-1][y], coord);
 				nodeQueue.add(leftNeighbour);
+				
+				//Assign Neighbor
+				current.setNeighbour(Constants.LEFT, leftNeighbour);
 			}
 			
 			//Right Neighbor
 			if(x + 1 < size){
+				
+				//Init Neighbor
 				int coord[] = {x-1, y};
 				Node rightNeighbour = new Node(nodes[x+1][y], coord);
 				nodeQueue.add(rightNeighbour);
+				
+				//Assign Neighbor
+				current.setNeighbour(Constants.LEFT, rightNeighbour);
 			}
 			
 			//Top Neighbor
 			if(y - 1 <= 0){
+				
+				//Init Neighbor
 				int coord[] = {x, y-1};
 				Node topNeighbour = new Node(nodes[x][y-1], coord);
 				nodeQueue.add(topNeighbour);
+				
+				//Assign Neighbor
+				current.setNeighbour(Constants.LEFT, topNeighbour);
 			}
 			
 			//Bottom Neighbor
 			if(y + 1 < size){
+				
+				//Init Neighbor
 				int coord[] = {x, y+1};
 				Node bottomNeighbour = new Node(nodes[x][y+1], coord);
 				nodeQueue.add(bottomNeighbour);
+				
+				//Assign Neighbor
+				current.setNeighbour(Constants.LEFT, bottomNeighbour);
 			}
 		}
 	}

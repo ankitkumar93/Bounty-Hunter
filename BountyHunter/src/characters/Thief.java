@@ -18,22 +18,25 @@ public class Thief {
 	//Dependent parameters
 	private int neighbourMatrixSize;
 	
+	//Constructor
 	public Thief(){
 		//Init graph
 		graph = new Graph(Constants.THIEF);
 		
-		//init coins
+		//Init coins
 		coins = 0;
 		
-		//init params
+		//Init params
 		neighbourMatrixSize = radiusOfVision*2 + 1;
 	}
 	
+	//AI Updation
 	public void update(){
 		//AI Updation Method
 		//Find Path
 	}
 	
+	//Move to a Node
 	public void move(int direction){
 		//Handle Movement to a Node
 		graph.move(direction);
@@ -50,9 +53,14 @@ public class Thief {
 		
 	}
 	
+	//Get Coins Collected
+	public int getCoins(){
+		return coins;
+	}
+	
 	//Private Functions
 	private void updateGraph(){
-		//Ask the Environment for Neighbour Matrix
+		//Ask the Environment for Neighbor Matrix
 		int neighbours[][] = null;
 		
 		//Supply the Matrix to the Graph

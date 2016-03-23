@@ -24,13 +24,24 @@ public class Node {
 	private int y;
 	
 	//Edges
-	
+	private int wl;
+	private int wr;
+	private int wt;
+	private int wb;
 	
 	//Constructor
 	public Node(int state, int coord[]){
+		
+		//Init State
 		this.state = state;
+		
+		//Init coordinates
 		x = coord[0];
 		y = coord[1];
+		
+		//Init Weights
+		wl = 0; wr = 0; wt = 0; wb = 0;
+		
 	}
 	
 	//Get Neighbors
@@ -44,9 +55,9 @@ public class Node {
 				return top;
 			case Constants.BOTTOM:
 				return bottom;
+			default:
+				return null;
 		}
-		
-		return null;
 	}
 	
 	//Set Neighbor
@@ -54,15 +65,19 @@ public class Node {
 		switch(flag){
 			case Constants.LEFT:
 				left = node;
+				wl = getWeight(node);
 				break;
 			case Constants.RIGHT:
 				right = node;
+				wr = getWeight(node);
 				break;
 			case Constants.TOP:
 				top = node;
+				wt = getWeight(node);
 				break;
 			case Constants.BOTTOM:
 				bottom = node;
+				wb = getWeight(node);
 				break;
 		}
 	}
@@ -75,5 +90,29 @@ public class Node {
 	//Set Node State
 	public void setState(int state){
 		this.state = state;
+	}
+	
+	//Get Weight of Neighbor Edge
+	public int getWeight(int flag){
+		switch(flag){
+			case Constants.LEFT: 
+				return wl;
+			case Constants.RIGHT:
+				return wr;
+			case Constants.TOP:
+				return wt;
+			case Constants.BOTTOM:
+				return wb;
+			default:
+				return 0;
+		}
+	}
+	
+	/*Private Helper Functions*/
+	private int getWeight(Node node){
+		int xDiff = Math.abs(node.x - x);
+		int yDiff = Math.abs(node.y - y);
+		
+		return xDiff + yDiff;
 	}
 }

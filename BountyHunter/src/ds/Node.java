@@ -10,7 +10,7 @@ import constants.Constants;
 //Implement the Class
 public class Node {
 	
-	//Neighbour References
+	//Neighbor References
 	private Node left;
 	private Node right;
 	private Node top;
@@ -19,12 +19,21 @@ public class Node {
 	//State
 	private int state;
 	
+	//Coordinate
+	private int x;
+	private int y;
+	
+	//Edges
+	
+	
 	//Constructor
-	public Node(int state){
+	public Node(int state, int coord[]){
 		this.state = state;
+		x = coord[0];
+		y = coord[1];
 	}
 	
-	//Get Neighbours
+	//Get Neighbors
 	public Node getNeighbour(int flag){
 		switch(flag){
 			case Constants.LEFT: 
@@ -40,7 +49,7 @@ public class Node {
 		return null;
 	}
 	
-	//Set Neighbour
+	//Set Neighbor
 	public void setNeighbour(int flag, Node node){
 		switch(flag){
 			case Constants.LEFT:

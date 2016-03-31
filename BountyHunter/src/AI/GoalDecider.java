@@ -1,3 +1,7 @@
+/* Game - Bounty Hunter */
+/* Thief AI Goal Decider Class for the Game */
+/* Designed By Ankit Kumar */
+
 package AI;
 
 import java.util.ArrayList;

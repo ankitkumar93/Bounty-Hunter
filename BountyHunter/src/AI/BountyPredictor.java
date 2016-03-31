@@ -1,3 +1,7 @@
+/* Game - Bounty Hunter */
+/* Bounty Hunter Position Predictor Class for the Game */
+/* Designed By Ankit Kumar */
+
 package AI;
 
 import java.util.ArrayList;

@@ -41,8 +41,6 @@ public class Environment{
 	private EnvironMap graph;
 	
 	//Shape Holders
-	private ThiefShape thiefShape;
-	private BountyShape bountyShape;
 	private CoinShape coinShape;
 	private ObstacleShape obstacleShape;
 	
@@ -81,12 +79,8 @@ public class Environment{
 				//Draw according to State
 				if(graph.matrix[i][j] == Constants.COIN)
 					coinShape.drawShape();
-				else if(graph.matrix[i][j] == Constants.THIEF)
-					thiefShape.drawShape();
 				else if(graph.matrix[i][j] == Constants.OBSTACLE)
 					obstacleShape.drawShape();
-				else if(graph.matrix[i][j] == Constants.BOUNTYHUNTER)
-					bountyShape.drawShape();
 				
 				//Remove Translate
 				mainApplet.popMatrix();
@@ -102,6 +96,14 @@ public class Environment{
 		relativePosition[1] = bountyPosition[1] - thiefPosition[1];
 		
 		return relativePosition;
+	}
+	
+	public int[] getThiefPosition(){
+		return thiefPosition;
+	}
+	
+	public int[] getBountyHunterPosition(){
+		return bountyPosition;
 	}
 	
 	//Get Environment Map
@@ -165,8 +167,6 @@ public class Environment{
 	
 	//Initialize Shapes for the Objects in the Environment
 	private void initializeShapes(){
-		thiefShape = new ThiefShape(mainApplet);
-		bountyShape = new BountyShape(mainApplet);
 		coinShape = new CoinShape(mainApplet);
 		obstacleShape = new ObstacleShape(mainApplet);
 	}

@@ -74,10 +74,10 @@ public class GoalDecider {
 	//Decide the Goal
 	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition){
 		Node output = null;
-		int maxDist = Integer.MIN_VALUE;
+		int maxDist = Integer.MAX_VALUE;
 		for(Node target: possibleGoal){
 			int tempDist = getDist(target, bountyPosition);
-			if(tempDist > maxDist){
+			if(tempDist < maxDist){
 				output = target;
 				maxDist = tempDist;
 			}

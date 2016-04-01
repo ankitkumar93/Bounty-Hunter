@@ -58,14 +58,15 @@ public class PathFinder {
 		while(!ol.isEmpty()){
 			Node currentNode = ol.remove();
 			
-			System.out.println("C: " + currentNode.getPosition()[0] + "::" + currentNode.getPosition()[1]);
-			
 			if(currentNode == target)
 				break;
 			
 			List<Node> neighbors = getNeighbors(currentNode);
 			
+			System.out.println("node: " + currentNode.getPosition()[0] + "::"  + currentNode.getPosition()[1]);
+			
 			for(Node neighbor : neighbors){
+				System.out.println("neighbours: " + neighbor.getPosition()[0] + "::"  + neighbor.getPosition()[1]);
 				if(!cl.contains(neighbor)){
 					if(!ol.contains(neighbor)){
 						PathNode newNode = new PathNode(neighbor);

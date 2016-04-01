@@ -51,8 +51,8 @@ public class Game extends PApplet{
 		bountyPosition = environment.getBountyHunterPosition();
 		
 		//Initialize Kinematic DS
-		kinematicBounty = new KinematicDS(thiefPosition, Constants.BOUNTYHUNTERRORIENTATION);
-		kinematicThief = new KinematicDS(bountyPosition, Constants.THIEFORIENTATION);
+		kinematicBounty = new KinematicDS(bountyPosition, Constants.BOUNTYHUNTERRORIENTATION);
+		kinematicThief = new KinematicDS(thiefPosition, Constants.THIEFORIENTATION);
 		
 		//Initialize Thief
 		thief = new Thief(environment.getBountyRelativePosition(), environment);

@@ -120,11 +120,11 @@ public class Environment{
 			
 			neighborMatrix[i] = new int[matrixSize];
 			
-			int offsetX = thiefPosition[0] + (i - neighborRadius);
+			int offsetY = thiefPosition[1] + (i - neighborRadius);
 			
 			for(int j = 0; j < matrixSize; j++){
 				
-				int offsetY = thiefPosition[1] + (j - neighborRadius);
+				int offsetX = thiefPosition[0] + (j - neighborRadius);
 				
 				if(((offsetX >= 0) && (offsetX < graph.size)) && ((offsetY >= 0) && (offsetY < graph.size)))
 					neighborMatrix[i][j] = graph.matrix[offsetX][offsetY];
@@ -153,10 +153,10 @@ public class Environment{
 		bountyPosition = new int[2];
 		
 		//Thief at the First Node
-		thiefPosition = Constants.BOUNTYHUNTERPOS;
+		thiefPosition = Constants.THIEFPOS;
 		
 		//Bounty Hunter at the Last Node
-		bountyPosition = Constants.THIEFPOS;
+		bountyPosition = Constants.BOUNTYHUNTERPOS;
 	}
 	
 	

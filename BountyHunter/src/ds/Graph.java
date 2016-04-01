@@ -7,6 +7,7 @@ package ds;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject;
 
 import constants.Constants;
 
@@ -61,10 +62,11 @@ public class Graph {
 			int[] right = {y, x + 1};
 			int[] top = {y-1, x};
 			int[] bottom = {y+1, x};
-
+			
+			boolean reachable = (x - 1 >= 0 && nodes[left[0]][left[1]] != Constants.OUTOFBOUNDS && nodes[left[0]][left[1]] != Constants.OBSTACLE);
 			
 			//Left Node
-			if(x - 1 >= 0 && nodes[left[0]][left[1]] != -1){
+			if(reachable){
 				int neighbor = left[0] + (left[1] *size);
 				Node leftNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
@@ -81,8 +83,10 @@ public class Graph {
 				}
 			}
 			
+			reachable = (x + 1 < size && nodes[right[0]][right[1]] != Constants.OUTOFBOUNDS && nodes[right[0]][right[1]] != Constants.OBSTACLE);
+			
 			//Right Node
-			if(x + 1 < size && nodes[right[0]][right[1]] != -1){
+			if(reachable){
 				int neighbor = right[0] + (right[1] *size);
 				Node rightNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
@@ -99,8 +103,10 @@ public class Graph {
 				}
 			}
 			
+			reachable = (y - 1 >= 0 && nodes[top[0]][top[1]] != Constants.OUTOFBOUNDS && nodes[top[0]][top[1]] != Constants.OBSTACLE);
+			
 			//Top Node
-			if(y - 1 >= 0 && nodes[top[0]][top[1]] != -1){
+			if(reachable){
 				int neighbor = top[0] + (top[1] *size);
 				Node topNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
@@ -117,8 +123,10 @@ public class Graph {
 				}
 			}
 			
+			reachable = (y + 1 < size && nodes[bottom[0]][bottom[1]] != Constants.OUTOFBOUNDS && nodes[bottom[0]][bottom[1]] != Constants.OBSTACLE);
+			
 			//Bottom Node
-			if(y + 1 < size && nodes[bottom[0]][bottom[1]] != -1){
+			if(reachable){
 				int neighbor = bottom[0] + (bottom[1] *size);
 				Node bottomNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){

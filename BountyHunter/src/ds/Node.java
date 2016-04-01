@@ -93,19 +93,17 @@ public class Node {
 	}
 	
 	//Get Weight of Neighbor Edge
-	public int getWeight(int flag){
-		switch(flag){
-			case Constants.LEFT: 
-				return wl;
-			case Constants.RIGHT:
-				return wr;
-			case Constants.TOP:
-				return wt;
-			case Constants.BOTTOM:
-				return wb;
-			default:
-				return 0;
-		}
+	public int getEdgeWeight(Node neighbor){
+		if(neighbor == null)
+			return 0;
+		else if(neighbor == left)
+			return wl;
+		else if(neighbor == right)
+			return wr;
+		else if(neighbor == top)
+			return wt;
+		else
+			return wb;
 	}
 	
 	//Get Position of the Node

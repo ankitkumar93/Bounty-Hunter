@@ -1,4 +1,4 @@
-package movement;
+package behavior;
 
 import ds.KinematicDS;
 import processing.core.PVector;

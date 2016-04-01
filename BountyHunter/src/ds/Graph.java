@@ -37,6 +37,10 @@ public class Graph {
 		int mid = (size - 1)/2;
 		int currentnode = (mid)*size + mid;
 		
+		int[] nodePosition = position.getPosition();
+		
+		int[] offset = {mid - nodePosition[0], mid - nodePosition[1]};
+		
 		nodeMap.put(currentnode, position);
 		
 		Queue<Node> nodeQueue = new LinkedList<Node>();
@@ -57,6 +61,7 @@ public class Graph {
 			int[] right = {y, x + 1};
 			int[] top = {y-1, x};
 			int[] bottom = {y+1, x};
+
 			
 			//Left Node
 			if(x - 1 >= 0 && nodes[left[0]][left[1]] != -1){
@@ -67,7 +72,8 @@ public class Graph {
 					current.setNeighbour(Constants.LEFT, leftNeighbor);
 				}
 				else{
-					leftNeighbor = new Node(nodes[left[0]][left[1]], left);
+					int[] coord = {left[1] - offset[1], left[0] - offset[0]};
+					leftNeighbor = new Node(nodes[left[0]][left[1]], coord);
 					current.setNeighbour(Constants.LEFT, leftNeighbor);
 					nodeQueue.add(leftNeighbor);
 					indexQueue.add(neighbor);
@@ -84,7 +90,8 @@ public class Graph {
 					current.setNeighbour(Constants.RIGHT, rightNeighbor);
 				}
 				else{
-					rightNeighbor = new Node(nodes[right[0]][right[1]], right);
+					int[] coord = {right[1] - offset[1], right[0] - offset[0]};
+					rightNeighbor = new Node(nodes[right[0]][right[1]], coord);
 					current.setNeighbour(Constants.RIGHT, rightNeighbor);
 					nodeQueue.add(rightNeighbor);
 					indexQueue.add(neighbor);
@@ -101,7 +108,8 @@ public class Graph {
 					current.setNeighbour(Constants.TOP, topNeighbor);
 				}
 				else{
-					topNeighbor = new Node(nodes[top[0]][top[1]], top);
+					int[] coord = {top[1] - offset[1], top[0] - offset[0]};
+					topNeighbor = new Node(nodes[top[0]][top[1]], coord);
 					current.setNeighbour(Constants.TOP, topNeighbor);
 					nodeQueue.add(topNeighbor);
 					indexQueue.add(neighbor);
@@ -118,7 +126,8 @@ public class Graph {
 					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
 				}
 				else{
-					bottomNeighbor = new Node(nodes[bottom[0]][bottom[1]], bottom);
+					int[] coord = {bottom[1] - offset[1], bottom[0] - offset[0]};
+					bottomNeighbor = new Node(nodes[bottom[0]][bottom[1]], coord);
 					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
 					nodeQueue.add(bottomNeighbor);
 					indexQueue.add(neighbor);

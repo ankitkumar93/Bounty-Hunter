@@ -4,6 +4,7 @@
 
 package ds;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -29,90 +30,107 @@ public class Graph {
 	}
 	
 	public void populate(int[][] nodes, int size){
-		//init queues
-		Queue<Node> nodeQueue = new LinkedList<Node>();
-		Queue<Integer> xQueue = new LinkedList<Integer>();
-		Queue<Integer> yQueue = new LinkedList<Integer>();
 		
-		//get current position
+		//Construct Hash-Map of Nodes
+		HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
+		
 		int mid = (size - 1)/2;
-		int[] pos = position.getPosition();
-		int[] offset = {pos[0] - mid, pos[1] - mid};
+		int currentnode = (mid)*size + mid;
 		
-		//add initial node and index
+		System.out.println(currentnode);
+		
+		nodeMap.put(currentnode, position);
+		
+		Queue<Node> nodeQueue = new LinkedList<Node>();
 		nodeQueue.add(position);
-		xQueue.add(mid);
-		yQueue.add(mid);
 		
-		//evaluate nodes till queue not empty
+		Queue<Integer> indexQueue = new LinkedList<Integer>();
+		indexQueue.add(currentnode);
+		
 		while(!nodeQueue.isEmpty()){
+			int index = indexQueue.remove();
 			Node current = nodeQueue.remove();
-			int x = xQueue.remove();
-			int y = yQueue.remove();
 			
-			//Left Neighbor
-			if(x - 1 >= 0){
-				
-				//Init Neighbor
-				int coord[] = {x-1 + offset[0], y + offset[1]};
-				Node leftNeighbour = new Node(nodes[x-1][y], coord);
-				
-				//Add to Queue
-				nodeQueue.add(leftNeighbour);
-				xQueue.add(x-1);
-				yQueue.add(y);
-				
-				//Assign Neighbor
-				current.setNeighbour(Constants.LEFT, leftNeighbour);
+			int x = index%size;
+			int y = index/size;
+			
+			System.out.println("X:" + x + " Y:" + y);
+			
+			//Neighbor Indexes
+			int[] left = {y, x - 1};
+			int[] right = {y, x + 1};
+			int[] top = {y-1, x};
+			int[] bottom = {y+1, x};
+			
+			//Left Node
+			if(x - 1 >= 0 && nodes[left[0]][left[1]] != -1){
+				int neighbor = left[0] + (left[1] *size);
+				Node leftNeighbor = null;
+				if(nodeMap.containsKey(neighbor)){
+					leftNeighbor = nodeMap.get(neighbor);
+					current.setNeighbour(Constants.LEFT, leftNeighbor);
+				}
+				else{
+					leftNeighbor = new Node(nodes[left[0]][left[1]], left);
+					current.setNeighbour(Constants.LEFT, leftNeighbor);
+					nodeQueue.add(leftNeighbor);
+					indexQueue.add(neighbor);
+					nodeMap.put(neighbor, leftNeighbor);
+				}
 			}
 			
-			//Right Neighbor
-			if(x + 1 < size){
-				
-				//Init Neighbor
-				int coord[] = {x+1 + offset[0], y + offset[1]};
-				Node rightNeighbour = new Node(nodes[x+1][y], coord);
-				
-				//Add to Queue
-				nodeQueue.add(rightNeighbour);
-				xQueue.add(x+1);
-				yQueue.add(y);
-				
-				//Assign Neighbor
-				current.setNeighbour(Constants.RIGHT, rightNeighbour);
+			//Right Node
+			if(x + 1 < size && nodes[right[0]][right[1]] != -1){
+				int neighbor = right[0] + (right[1] *size);
+				Node rightNeighbor = null;
+				if(nodeMap.containsKey(neighbor)){
+					rightNeighbor = nodeMap.get(neighbor);
+					current.setNeighbour(Constants.RIGHT, rightNeighbor);
+				}
+				else{
+					rightNeighbor = new Node(nodes[right[0]][right[1]], right);
+					current.setNeighbour(Constants.RIGHT, rightNeighbor);
+					nodeQueue.add(rightNeighbor);
+					indexQueue.add(neighbor);
+					nodeMap.put(neighbor, rightNeighbor);
+				}
 			}
 			
-			//Top Neighbor
-			if(y - 1 <= 0){
-				
-				//Init Neighbor
-				int coord[] = {x + offset[0], y-1 + offset[1]};
-				Node topNeighbour = new Node(nodes[x][y-1], coord);
-				
-				//Add to Queue
-				nodeQueue.add(topNeighbour);
-				xQueue.add(x);
-				yQueue.add(y-1);
-				
-				//Assign Neighbor
-				current.setNeighbour(Constants.TOP, topNeighbour);
+			//Top Node
+			if(y - 1 >= 0 && nodes[top[0]][top[1]] != -1){
+				int neighbor = top[0] + (top[1] *size);
+				Node topNeighbor = null;
+				if(nodeMap.containsKey(neighbor)){
+					topNeighbor = nodeMap.get(neighbor);
+					current.setNeighbour(Constants.TOP, topNeighbor);
+				}
+				else{
+					topNeighbor = new Node(nodes[top[0]][top[1]], top);
+					current.setNeighbour(Constants.TOP, topNeighbor);
+					nodeQueue.add(topNeighbor);
+					indexQueue.add(neighbor);
+					nodeMap.put(neighbor, topNeighbor);
+				}
 			}
 			
-			//Bottom Neighbor
-			if(y + 1 < size){
-				
-				//Init Neighbor
-				int coord[] = {x + offset[0], y+1 + offset[1]};
-				Node bottomNeighbour = new Node(nodes[x][y+1], coord);
-				
-				//Add to Queue
-				nodeQueue.add(bottomNeighbour);
-				xQueue.add(x);
-				yQueue.add(y+1);
-				
-				//Assign Neighbor
-				current.setNeighbour(Constants.BOTTOM, bottomNeighbour);
+			//Bottom Node
+			if(y + 1 < size && nodes[bottom[0]][bottom[1]] != -1){
+				int neighbor = bottom[0] + (bottom[1] *size);
+				Node bottomNeighbor = null;
+				if(nodeMap.containsKey(neighbor)){
+					bottomNeighbor = nodeMap.get(neighbor);
+					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
+				}
+				else{
+					bottomNeighbor = new Node(nodes[bottom[0]][bottom[1]], bottom);
+					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
+					nodeQueue.add(bottomNeighbor);
+					indexQueue.add(neighbor);
+					nodeMap.put(neighbor, bottomNeighbor);
+				}
 			}
+			
 		}
+		
 	}
 }

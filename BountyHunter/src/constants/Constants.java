@@ -21,14 +21,18 @@ public class Constants {
 	public final static int THIEF = 3;
 	public final static int BOUNTYHUNTER = 4;
 	public final static int BHCOIN = 5;
+	public final static int OUTOFBOUNDS = -1;
 	
 	
 	/* Tunable Parameters */
 	
 	//Max Velocities
-	public final static int maxVelocityThief = 5;
-	public final static int maxVelocityBountyHunter = 5;
+	public final static int MVTHIEF = 5;
+	public final static int MVBOUNTYHUNTER = 5;
 	
 	//Time Intervals
-	public final static int predictionTimeInterval = 2;
+	public final static int PREDICTIONTI = 1;
+	
+	//Radiuses
+	public final static int ROVTHIEF = 2;
 }

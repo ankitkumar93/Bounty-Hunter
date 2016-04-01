@@ -16,16 +16,16 @@ public class Environment{
 	
 	/* Hard coded Graph */
 	private final int[][] HARDCODED_GRAPH = {
-			{0,0,2,2,2,2,2,0,0,0},
-			{0,1,1,1,1,1,1,0,1,0},
-			{0,0,0,0,0,0,0,2,1,0},
-			{0,1,0,1,1,0,1,2,1,2},
-			{0,1,0,1,1,0,1,2,1,2},
-			{2,1,0,0,0,0,1,0,1,2},
-			{2,1,0,1,1,1,1,0,1,0},
-			{2,1,0,0,0,0,0,0,0,0},
-			{2,1,0,1,1,1,1,1,1,0},
-			{2,0,0,0,0,2,2,0,0,0}			
+			{2,2,2,2,2,2,2,2,2,2},
+			{2,1,1,1,1,1,1,2,1,2},
+			{2,2,2,2,2,2,2,2,1,2},
+			{2,1,2,1,1,2,1,2,1,2},
+			{2,1,2,1,1,2,1,2,1,2},
+			{2,1,2,2,2,2,1,2,1,2},
+			{2,1,2,1,1,1,1,2,1,2},
+			{2,1,2,2,2,2,2,2,2,2},
+			{2,1,2,1,1,1,1,1,1,2},
+			{2,2,2,2,2,2,2,2,2,2}			
 	};
 	private final int HARDCODED_GRAPH_SIZE = 10;
 	private final int cellWidth = 50;
@@ -65,6 +65,8 @@ public class Environment{
 		initializeShapes();
 	}
 	
+	
+	//Draw the Environment
 	public void draw(){
 		for(int i = 0; i < graph.size; i++){
 			for(int j = 0; j < graph.size; j++){
@@ -90,6 +92,52 @@ public class Environment{
 				mainApplet.popMatrix();
 			}
 		}
+	}
+	
+	//Get Relative Position of the Bounty Hunter From the Thief
+	public int[] getBountyRelativePosition(){
+		int[] relativePosition = new int[2];
+		
+		relativePosition[0] = bountyPosition[0] - thiefPosition[0];
+		relativePosition[1] = bountyPosition[1] - thiefPosition[1];
+		
+		return relativePosition;
+	}
+	
+	//Get Environment Map
+	public EnvironMap getEnvMap(){
+		return this.graph;
+	}
+	
+	//Get Neighbors for Thief
+	public int[][] getNeighbours(int neighborRadius){
+		int matrixSize = (neighborRadius*2) + 1;
+		int[][] neighborMatrix = new int[matrixSize][];
+		System.out.println("matrix: " + matrixSize);
+		
+		for(int i = 0; i < matrixSize; i++){
+			
+			neighborMatrix[i] = new int[matrixSize];
+			
+			int offsetX = thiefPosition[0] + (i - neighborRadius);
+			
+			for(int j = 0; j < matrixSize; j++){
+				
+				int offsetY = thiefPosition[1] + (j - neighborRadius);
+				
+				if(((offsetX >= 0) && (offsetX < graph.size)) && ((offsetY >= 0) && (offsetY < graph.size)))
+					neighborMatrix[i][j] = graph.matrix[offsetX][offsetY];
+				else
+					neighborMatrix[i][j] = Constants.OUTOFBOUNDS;
+				
+				System.out.print(neighborMatrix[i][j] + "::");
+				
+			}
+			
+			System.out.println("");
+		}
+		
+		return neighborMatrix;
 	}
 	
 	

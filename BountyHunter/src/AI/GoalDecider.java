@@ -19,28 +19,14 @@ public class GoalDecider {
 	
 	/* Private Functions */
 	//Compute Distance between two Nodes
-	private int getDist(Node a, Node b){
+	private int getDist(Node a, int[] b_coord){
 		int dist = 0;
 		
 		int a_coord[] = a.getPosition();
-		int b_coord[] = b.getPosition();
 		
 		dist =  Math.abs(a_coord[0] - b_coord[0]) + Math.abs(a_coord[1] - b_coord[1]);
 		
 		return dist;
-	}
-	
-	//Compute Minimum Distance from all Predictions
-	private int getMinDist(Node target, List<Node> predictedLocations){
-		int minDist = Integer.MAX_VALUE;
-		
-		for(Node location: predictedLocations){
-			int tempDist = getDist(target, location);
-			if(tempDist > minDist)
-				minDist = tempDist;
-		}
-		
-		return minDist;
 	}
 	
 	//Compute possible goal states
@@ -81,14 +67,14 @@ public class GoalDecider {
 	}
 	
 	//Decide the Goal
-	private Node decideGoal(List<Node> possibleGoal, List<Node> predictedLocations){
+	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition){
 		Node output = null;
-		int minDist = Integer.MAX_VALUE;
+		int maxDist = Integer.MIN_VALUE;
 		for(Node target: possibleGoal){
-			int tempDist = getMinDist(target, predictedLocations);
-			if(tempDist < minDist){
+			int tempDist = getDist(target, bountyPosition);
+			if(tempDist > maxDist){
 				output = target;
-				minDist = tempDist;
+				maxDist = tempDist;
 			}
 		}
 		
@@ -103,11 +89,11 @@ public class GoalDecider {
 		this.graph = graph;
 	}
 	
-	public Node update(List<Node> predictedLocations){
+	public Node update(int[] bountyPosition){
 		Node goal = null;
 		
 		List<Node> possibleGoals = getPossibleGoals();
-		goal = decideGoal(possibleGoals, predictedLocations);
+		goal = decideGoal(possibleGoals, bountyPosition);
 		
 		return goal;
 	}

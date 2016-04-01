@@ -7,6 +7,9 @@ package characters;
 import constants.Constants;
 import ds.Graph;
 import ds.Node;
+import environment.Environment;
+
+import AI.*;
 
 public class Thief {
 	//Graph
@@ -16,27 +19,52 @@ public class Thief {
 	private int coins;
 	
 	//Parameters of Control
-	private int radiusOfVision = 5;
+	private int radiusOfVision;
 	
 	//Dependent parameters
 	private int neighbourMatrixSize;
 	
+	//Last Known Bounty Hunter's Position
+	int[] bountyPosition;
+	
+	//Environment (Limit Access)
+	private Environment environment;
+	
+	/* AI Modules */
+	private GoalDecider goalDecider;
+	
 	//Constructor
-	public Thief(){
-		//Init graph
+	public Thief(int[] bountyPosition, Environment environment){
+		//Initialize graph
 		graph = new Graph(Constants.THIEF);
 		
-		//Init coins
-		coins = 0;
+		//Copy environment
+		this.environment = environment;
 		
-		//Init params
+		//set tunable parameters
+		radiusOfVision = Constants.ROVTHIEF;
+		
+		//Initialize parameters
+		coins = 0;
 		neighbourMatrixSize = radiusOfVision*2 + 1;
+		this.bountyPosition = bountyPosition;
+		
+		
+		//Initialize AI Modules
+		goalDecider = new GoalDecider(graph);
+		
+		//Update the Graph Initially
+		updateGraph();
 	}
 	
 	//AI Updation
 	public void update(){
 		//AI Updation Method
-		//Find Path
+		
+		//Compute the Goal
+		//Node goal = goalDecider.update(bountyPosition);
+		
+		//System.out.println("Goal Position is: "  + goal.getPosition());
 	}
 	
 	//Move to a Node
@@ -64,7 +92,7 @@ public class Thief {
 	//Private Functions
 	private void updateGraph(){
 		//Ask the Environment for Neighbor Matrix
-		int neighbours[][] = null;
+		int neighbours[][] = environment.getNeighbours(radiusOfVision);
 		
 		//Supply the Matrix to the Graph
 		graph.populate(neighbours, neighbourMatrixSize);

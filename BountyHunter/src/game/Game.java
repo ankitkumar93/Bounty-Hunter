@@ -71,6 +71,7 @@ public class Game extends PApplet{
 		
 	//Draw bounty
 	public void drawBountyHunter(){
+		
 		pushMatrix();
 		translate(currentBounty[0], currentBounty[1]);
 		bountyShape.drawShape();

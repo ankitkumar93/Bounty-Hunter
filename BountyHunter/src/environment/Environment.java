@@ -99,11 +99,11 @@ public class Environment{
 	}
 	
 	public int[] getThiefPosition(){
-		return thiefPosition;
+		return graph.localize(thiefPosition[0], thiefPosition[1]);
 	}
 	
 	public int[] getBountyHunterPosition(){
-		return bountyPosition;
+		return graph.localize(bountyPosition[0], bountyPosition[1]);
 	}
 	
 	//Get Environment Map

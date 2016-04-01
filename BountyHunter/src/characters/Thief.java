@@ -72,10 +72,18 @@ public class Thief {
 		}
 	}
 	
+	//Get Next Point
+	public int[] getNextTarget(){
+		int[] nextTarget = null;
+		
+		return nextTarget;
+	}
+	
 	//Move to a Node
-	public void move(int direction){
+	public int move(int direction){
 		//Handle Movement to a Node
 		graph.move(direction);
+		
 		
 		//Handle coins
 		Node position = graph.getPosition();
@@ -86,6 +94,8 @@ public class Thief {
 		
 		//Update the Graph
 		updateGraph();
+		
+		return position.getState();
 		
 	}
 	

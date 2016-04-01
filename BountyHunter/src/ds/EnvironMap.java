@@ -43,4 +43,8 @@ public class EnvironMap {
 		
 		return position;
 	}
+	
+	public void setState(int x, int y, int state){
+		this.matrix[x][y] = state;
+	}
 }

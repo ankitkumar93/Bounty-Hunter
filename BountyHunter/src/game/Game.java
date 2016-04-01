@@ -1,6 +1,8 @@
 package game;
 
 import characters.Thief;
+import constants.Constants;
+import ds.KinematicDS;
 import environment.Environment;
 import processing.core.*;
 import shapes.BountyShape;
@@ -12,13 +14,17 @@ public class Game extends PApplet{
 	private Environment environment;
 	private Thief thief;
 	
-	//Add bounty and thief shape
+	//Shapes
 	private ThiefShape thiefShape;
 	private BountyShape bountyShape;
-		
-	//Add current bounty and thief position
-	private int[] currentThief;
-	private int[] currentBounty;
+	
+	//Kinematic DS
+	private KinematicDS kinematicThief;
+	private KinematicDS kinematicBounty;
+	
+	//Positional Data
+	private int[] thiefPosition;
+	private int[] bountyPosition;
 	
 	
 	/* Processing Data */
@@ -39,10 +45,14 @@ public class Game extends PApplet{
 		//Initialize shape
 		thiefShape = new ThiefShape(this);
 		bountyShape = new BountyShape(this);
-				
-		//Initialize position
-		currentBounty = environment.getBountyHunterPosition();
-		currentThief = environment.getThiefPosition();
+		
+		//Initialize Position
+		thiefPosition = environment.getThiefPosition();
+		bountyPosition = environment.getBountyHunterPosition();
+		
+		//Initialize Kinematic DS
+		kinematicBounty = new KinematicDS(thiefPosition, Constants.BOUNTYHUNTERRORIENTATION);
+		kinematicThief = new KinematicDS(bountyPosition, Constants.THIEFORIENTATION);
 		
 		//Initialize Thief
 		thief = new Thief(environment.getBountyRelativePosition(), environment);
@@ -64,7 +74,8 @@ public class Game extends PApplet{
 	//Draw thief
 	public void drawThief(){
 		pushMatrix();
-		translate(currentThief[0], currentThief[1]);
+		translate(kinematicThief.position.x, kinematicThief.position.y);
+		rotate(kinematicThief.orientation);
 		thiefShape.drawShape();
 		popMatrix();
 	}
@@ -73,7 +84,8 @@ public class Game extends PApplet{
 	public void drawBountyHunter(){
 		
 		pushMatrix();
-		translate(currentBounty[0], currentBounty[1]);
+		translate(kinematicBounty.position.x, kinematicBounty.position.y);
+		rotate(kinematicBounty.orientation);
 		bountyShape.drawShape();
 		popMatrix();
 	}

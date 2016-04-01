@@ -137,6 +137,12 @@ public class Environment{
 		return neighborMatrix;
 	}
 	
+	//Update State of the Desired Node
+	public void updateState(int[] target, int state){
+		int[] targetNode = graph.quantize(target[0], target[1]);
+		graph.setState(targetNode[0], targetNode[1], state);
+	}
+	
 	
 	/* Private Helper Functions */
 	
@@ -147,12 +153,10 @@ public class Environment{
 		bountyPosition = new int[2];
 		
 		//Thief at the First Node
-		thiefPosition[0] = 0;
-		thiefPosition[1] = 0;
+		thiefPosition = Constants.BOUNTYHUNTERPOS;
 		
 		//Bounty Hunter at the Last Node
-		bountyPosition[0] = 9;
-		bountyPosition[1] = 9;
+		bountyPosition = Constants.THIEFPOS;
 	}
 	
 	

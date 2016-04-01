@@ -23,6 +23,12 @@ public class Constants {
 	public final static int BHCOIN = 5;
 	public final static int OUTOFBOUNDS = -1;
 	
+	/* Character Parameters */
+	public static final int[] THIEFPOS = {0,0};
+	public static final int[] BOUNTYHUNTERPOS = {9,9};
+	public static final float THIEFORIENTATION = 0.f;
+	public static final float BOUNTYHUNTERRORIENTATION = -(float)(Math.PI);
+	
 	
 	/* Tunable Parameters */
 	

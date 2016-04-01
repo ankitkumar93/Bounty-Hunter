@@ -1,5 +1,7 @@
 package game;
 
+import behavior.SeekAlign;
+import characters.BountyHunter;
 import characters.Thief;
 import constants.Constants;
 import ds.KinematicDS;
@@ -13,6 +15,7 @@ public class Game extends PApplet{
 	/* Class Data */
 	private Environment environment;
 	private Thief thief;
+	private BountyHunter bountyHunter;
 	
 	//Shapes
 	private ThiefShape thiefShape;
@@ -54,8 +57,9 @@ public class Game extends PApplet{
 		kinematicBounty = new KinematicDS(bountyPosition, Constants.BOUNTYHUNTERRORIENTATION);
 		kinematicThief = new KinematicDS(thiefPosition, Constants.THIEFORIENTATION);
 		
-		//Initialize Thief
+		//Initialize Character
 		thief = new Thief(environment.getBountyRelativePosition(), environment);
+		bountyHunter = new BountyHunter();
 	}
 	
 	//Draw
@@ -65,14 +69,45 @@ public class Game extends PApplet{
 		//Updations
 		thief.update();
 		
+		//Movement
+		moveThief();
+		moveBountyHunter();
+		
 		//Draw Methods
 		environment.draw();
 		drawThief();
 		drawBountyHunter();
 	}
 	
+	/* Private Functions */
+	
+	//Move Thief
+	private void moveThief(){
+		int[] target = thief.getNextTarget();
+		if(target == null)
+			return;
+
+		kinematicThief = SeekAlign.update(kinematicThief, target, Constants.MVTHIEF, Constants.MRTHIEF);
+		
+		int newX = (int)kinematicThief.position.x;
+		int newY = (int)kinematicThief.position.y;
+		
+		if(newX == target[0] && newY == target[1]){
+			thief.move(target);
+		}
+	}
+	
+	//Move Bounty Hunter
+	private void moveBountyHunter(){
+		int[] target = bountyHunter.getNextTarget();
+		if(target == null)
+			return;
+		
+		kinematicBounty = SeekAlign.update(kinematicBounty, target, Constants.MVBOUNTYHUNTER, Constants.MRBOUNTYHUNTER);
+	}
+	
 	//Draw thief
-	public void drawThief(){
+	private void drawThief(){
 		pushMatrix();
 		translate(kinematicThief.position.x, kinematicThief.position.y);
 		rotate(kinematicThief.orientation);
@@ -81,7 +116,7 @@ public class Game extends PApplet{
 	}
 		
 	//Draw bounty
-	public void drawBountyHunter(){
+	private void drawBountyHunter(){
 		
 		pushMatrix();
 		translate(kinematicBounty.position.x, kinematicBounty.position.y);

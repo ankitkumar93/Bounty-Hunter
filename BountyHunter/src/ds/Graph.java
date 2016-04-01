@@ -7,7 +7,6 @@ package ds;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.locks.AbstractQueuedLongSynchronizer.ConditionObject;
 
 import constants.Constants;
 
@@ -17,9 +16,36 @@ public class Graph {
 	//Position in Graph
 	private Node position;
 	
-	public Graph(int state){
+	//Cell Dimensions
+	private int cellWidth;
+	private int cellHeight;
+	
+	public Graph(int state, int cellWidth, int cellHeight){
 		int coord[] = {0, 0};
 		position = new Node(state, coord);
+		
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
+	}
+	
+	//Localize
+	public int[] localize(int[] graphPosition){
+		int[] localPosition = new int[2];
+		
+		localPosition[0] = cellWidth*graphPosition[0] + cellWidth/2;
+		localPosition[1] = cellHeight*graphPosition[1] + cellHeight/2;
+		
+		return localPosition;
+	}
+	
+	//Quantize
+	public int[] quantize(int[] localPosition){
+		int[] graphPosition = new int[2];
+		
+		graphPosition[0] = localPosition[0]/cellWidth;
+		graphPosition[1] = localPosition[1]/cellHeight;
+		
+		return graphPosition;
 	}
 	
 	public void move(int flag){
@@ -36,7 +62,7 @@ public class Graph {
 		HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
 		
 		int mid = (size - 1)/2;
-		int currentnode = (mid)*size + mid;
+		int currentnode = (mid*size) + mid;
 		
 		int[] nodePosition = position.getPosition();
 		
@@ -67,7 +93,7 @@ public class Graph {
 			
 			//Left Node
 			if(reachable){
-				int neighbor = left[0] + (left[1] *size);
+				int neighbor = left[1] + (left[0] *size);
 				Node leftNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					leftNeighbor = nodeMap.get(neighbor);
@@ -87,7 +113,7 @@ public class Graph {
 			
 			//Right Node
 			if(reachable){
-				int neighbor = right[0] + (right[1] *size);
+				int neighbor = right[1] + (right[0] *size);
 				Node rightNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					rightNeighbor = nodeMap.get(neighbor);
@@ -107,7 +133,7 @@ public class Graph {
 			
 			//Top Node
 			if(reachable){
-				int neighbor = top[0] + (top[1] *size);
+				int neighbor = top[1] + (top[0] *size);
 				Node topNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					topNeighbor = nodeMap.get(neighbor);
@@ -127,7 +153,7 @@ public class Graph {
 			
 			//Bottom Node
 			if(reachable){
-				int neighbor = bottom[0] + (bottom[1] *size);
+				int neighbor = bottom[1] + (bottom[0] *size);
 				Node bottomNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					bottomNeighbor = nodeMap.get(neighbor);

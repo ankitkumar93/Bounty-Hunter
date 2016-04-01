@@ -28,8 +28,8 @@ public class Environment{
 			{2,2,2,2,2,2,2,2,2,2}			
 	};
 	private final int HARDCODED_GRAPH_SIZE = 10;
-	private final int cellWidth = 50;
-	private final int cellHeight = 50;
+	private int cellWidth;
+	private int cellHeight;
 	
 	/* Class Data */
 	
@@ -162,6 +162,8 @@ public class Environment{
 	
 	//Initialize Graph
 	private void initializeGraph(){
+		cellWidth = Constants.CELLWIDTH;
+		cellHeight = Constants.CELLHEIGHT;
 		graph = new EnvironMap(HARDCODED_GRAPH, HARDCODED_GRAPH_SIZE, cellWidth, cellHeight);
 		
 		//Put Thief and Bounty Hunter on the Graph

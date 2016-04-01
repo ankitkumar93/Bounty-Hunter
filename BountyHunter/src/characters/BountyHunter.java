@@ -48,7 +48,7 @@ public class BountyHunter {
 			return null;
 		}
 		
-		return gameMap.quantize(target[0], target[1]);
+		return gameMap.localize(target[0], target[1]);
 	}
 	
 	public int move(int direction){

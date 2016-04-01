@@ -7,7 +7,8 @@ package characters;
 import java.util.List;
 
 import AI.GoalDecider;
-import behavior.PathFinder;
+import AI.PathFinder;
+import AI.PathFollower;
 import constants.Constants;
 import ds.Graph;
 import ds.Node;
@@ -26,6 +27,10 @@ public class Thief {
 	//Dependent parameters
 	private int neighbourMatrixSize;
 	
+	//Cell Dimensions
+	private int cellWidth;
+	private int cellHeight;
+	
 	//Last Known Bounty Hunter's Position
 	int[] bountyPosition;
 	
@@ -35,13 +40,18 @@ public class Thief {
 	/* AI Modules */
 	private GoalDecider goalDecider;
 	private PathFinder pathFinder;
+	private PathFollower pathFollower;
 	
 	private boolean goalFlag = true;
 	
 	//Constructor
 	public Thief(int[] bountyPosition, Environment environment){
+		//Initialize Cell Dimensions
+		cellWidth = Constants.CELLWIDTH;
+		cellHeight = Constants.CELLHEIGHT;
+		
 		//Initialize graph
-		graph = new Graph(Constants.THIEF);
+		graph = new Graph(Constants.THIEF, cellWidth, cellHeight);
 		
 		//Copy environment
 		this.environment = environment;
@@ -54,10 +64,10 @@ public class Thief {
 		neighbourMatrixSize = radiusOfVision*2 + 1;
 		this.bountyPosition = bountyPosition;
 		
-		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
 		pathFinder = new PathFinder(graph);
+		pathFollower = new PathFollower();
 		
 		//Update the Graph Initially
 		updateGraph();
@@ -70,14 +80,10 @@ public class Thief {
 		
 			//Compute the Goal
 			Node goal = goalDecider.update(bountyPosition);
-		
-			System.out.println("Goal Position is: "  + goal.getPosition()[0] + ":" + goal.getPosition()[1]);
 			
 			List<Node> path = pathFinder.search(goal);
 			
-			for(Node pathNode : path){
-				System.out.println(pathNode.getPosition()[0] + ":" + pathNode.getPosition()[1]);
-			}
+			pathFollower.setPath(path);
 			
 			goalFlag = false;
 		}
@@ -87,14 +93,43 @@ public class Thief {
 	public int[] getNextTarget(){
 		int[] nextTarget = null;
 		
+//		System.out.println(graph.getPosition().getPosition()[0] + ":" + graph.getPosition().getPosition()[1]);
+		
+		Node target = pathFollower.getNextTarget(graph.getPosition());
+		if(target != null){
+			nextTarget = graph.localize(target.getPosition());
+		}
+		
 		return nextTarget;
 	}
 	
 	//Move to a Node
-	public int move(int direction){
+	public int move(int[] target){
+		int[] prevPosition = graph.getPosition().getPosition();
+		int[] newPosition = graph.quantize(target);
+		
+		int[] directionVec = {newPosition[0] - prevPosition[0], newPosition[1] - prevPosition[1]};
+		
+		//System.out.println(directionVec[0] + ":" + directionVec[1]);
+		
+		int direction = 0;
+		
+		//Calc Direction
+		if(directionVec[0] == 1)
+			direction = Constants.RIGHT;
+		else if(directionVec[0] == -1)
+			direction = Constants.LEFT;
+		else if(directionVec[1] == 1)
+			direction = Constants.BOTTOM;
+		else if(directionVec[1] == -1)
+			direction = Constants.TOP;
+		
 		//Handle Movement to a Node
 		graph.move(direction);
 		
+//		System.out.println(direction);
+		
+//		System.out.println(graph.getPosition().getPosition()[0] + ":" + graph.getPosition().getPosition()[1]);
 		
 		//Handle coins
 		Node position = graph.getPosition();

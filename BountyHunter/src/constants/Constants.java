@@ -36,6 +36,10 @@ public class Constants {
 	public final static int MVTHIEF = 5;
 	public final static int MVBOUNTYHUNTER = 5;
 	
+	//Max Rotation
+	public final static float MRTHIEF = (float)(Math.PI/20);
+	public final static float MRBOUNTYHUNTER = (float)(Math.PI/20);
+	
 	//Time Intervals
 	public final static int PREDICTIONTI = 1;
 	

@@ -37,8 +37,6 @@ public class Graph {
 		int mid = (size - 1)/2;
 		int currentnode = (mid)*size + mid;
 		
-		System.out.println(currentnode);
-		
 		nodeMap.put(currentnode, position);
 		
 		Queue<Node> nodeQueue = new LinkedList<Node>();
@@ -53,8 +51,6 @@ public class Graph {
 			
 			int x = index%size;
 			int y = index/size;
-			
-			System.out.println("X:" + x + " Y:" + y);
 			
 			//Neighbor Indexes
 			int[] left = {y, x - 1};

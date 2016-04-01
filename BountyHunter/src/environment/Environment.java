@@ -113,7 +113,6 @@ public class Environment{
 	public int[][] getNeighbours(int neighborRadius){
 		int matrixSize = (neighborRadius*2) + 1;
 		int[][] neighborMatrix = new int[matrixSize][];
-		System.out.println("matrix: " + matrixSize);
 		
 		for(int i = 0; i < matrixSize; i++){
 			
@@ -130,11 +129,7 @@ public class Environment{
 				else
 					neighborMatrix[i][j] = Constants.OUTOFBOUNDS;
 				
-				System.out.print(neighborMatrix[i][j] + "::");
-				
 			}
-			
-			System.out.println("");
 		}
 		
 		return neighborMatrix;

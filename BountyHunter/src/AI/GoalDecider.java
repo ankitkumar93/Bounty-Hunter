@@ -5,6 +5,7 @@
 package AI;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
@@ -37,29 +38,33 @@ public class GoalDecider {
 		Node source = graph.getPosition();
 		Stack<Node> stack =  new Stack<Node>();
 		stack.push(source);
+		HashSet<Node> visited = new HashSet<Node>();
 		
 		while(!stack.isEmpty()){
 			
 			//Get Node and Neighbors
 			Node current = stack.pop();
+			
 			Node top = current.getNeighbour(Constants.TOP);
 			Node bottom = current.getNeighbour(Constants.BOTTOM);
 			Node left = current.getNeighbour(Constants.LEFT);
 			Node right = current.getNeighbour(Constants.RIGHT);
 			
 			//Push Neighbors
-			if(top != null)
+			if(top != null && !visited.contains(top))
 				stack.push(top);
-			if(bottom != null)
+			if(bottom != null && !visited.contains(bottom))
 				stack.push(bottom);
-			if(left != null)
+			if(left != null && !visited.contains(left))
 				stack.push(left);
-			if(right != null)
+			if(right != null && !visited.contains(right))
 				stack.push(right);
 			
 			//Check Node
 			if(current.getState() == Constants.COIN)
 				output.add(current);
+			
+			visited.add(current);
 			
 		}
 		

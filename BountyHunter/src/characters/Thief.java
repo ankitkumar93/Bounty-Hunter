@@ -33,6 +33,8 @@ public class Thief {
 	/* AI Modules */
 	private GoalDecider goalDecider;
 	
+	private boolean goalFlag = true;
+	
 	//Constructor
 	public Thief(int[] bountyPosition, Environment environment){
 		//Initialize graph
@@ -60,11 +62,14 @@ public class Thief {
 	//AI Updation
 	public void update(){
 		//AI Updation Method
+		if(goalFlag){
 		
-		//Compute the Goal
-		//Node goal = goalDecider.update(bountyPosition);
+			//Compute the Goal
+			Node goal = goalDecider.update(bountyPosition);
 		
-		//System.out.println("Goal Position is: "  + goal.getPosition());
+			System.out.println("Goal Position is: "  + goal.getPosition()[0] + ":" + goal.getPosition()[1]);
+			goalFlag = false;
+		}
 	}
 	
 	//Move to a Node

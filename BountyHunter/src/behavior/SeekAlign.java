@@ -4,7 +4,7 @@ import ds.KinematicDS;
 import processing.core.PVector;
 
 public class SeekAlign {
-	public static KinematicDS update(KinematicDS character, int[] target, int maxVelocity, float maxRotation){
+	public static KinematicDS update(KinematicDS character, int[] target, float targetOrientation, int maxVelocity, float maxRotation){
 		KinematicDS output = character;
 		
 		//Seek
@@ -18,8 +18,7 @@ public class SeekAlign {
 		output.position.add(velocity);
 		
 		//Align
-		float targetOrientation = (float)Math.atan2(target[1] - character.position.y, target[0] - character.position.x);
-		float rotation = targetOrientation - character.orientation;
+		float rotation = mapToRange(targetOrientation - character.orientation);
 		if(rotation > maxRotation){
 			rotation = maxRotation*(rotation/Math.abs(rotation));
 		}
@@ -29,5 +28,18 @@ public class SeekAlign {
 		
 		
 		return output;
+	}
+	
+	/* Private Functions */
+	private static float mapToRange(float rotation){
+		float pi = (float)Math.PI;
+		float newRotation = rotation % (2*pi);
+		
+		if(Math.abs(newRotation) <= pi)
+			return newRotation;
+		else if(newRotation > pi)
+			return (newRotation - (2*pi));
+		else
+			return (newRotation + (2*pi));
 	}
 }

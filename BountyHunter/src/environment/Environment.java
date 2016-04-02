@@ -88,6 +88,19 @@ public class Environment{
 		}
 	}
 	
+	//Get Total Coins in the Environment
+	public int getCoins(){
+		int coins = 0;
+		for(int i = 0; i < graph.size; i++){
+			for(int j = 0; j < graph.size; j++){
+				if(graph.matrix[i][j] == Constants.COIN)
+					coins++;
+			}
+		}
+		
+		return coins;
+	}
+	
 	//Get Relative Position of the Bounty Hunter From the Thief
 	public int[] getBountyRelativePosition(){
 		int[] relativePosition = new int[2];
@@ -150,7 +163,7 @@ public class Environment{
 	
 	//Update Position of Bounty Hunter
 	public void updateBountyHunterPosition(int[] target){
-		thiefPosition = graph.quantize(target[0], target[1]);
+		bountyPosition = target.clone();
 	}
 	
 	

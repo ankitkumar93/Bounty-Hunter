@@ -29,6 +29,9 @@ public class Game extends PApplet{
 	private int[] thiefPosition;
 	private int[] bountyPosition;
 	
+	//Coin Data
+	private int totalCoins;
+	
 	
 	/* Processing Data */
 	private final int WINDOW_HEIGHT = 500;
@@ -53,13 +56,16 @@ public class Game extends PApplet{
 		thiefPosition = environment.getThiefPosition();
 		bountyPosition = environment.getBountyHunterPosition();
 		
+		//Initialize Coins
+		totalCoins = environment.getCoins();
+		
 		//Initialize Kinematic DS
 		kinematicBounty = new KinematicDS(bountyPosition, Constants.BOUNTYHUNTERRORIENTATION);
 		kinematicThief = new KinematicDS(thiefPosition, Constants.THIEFORIENTATION);
 		
 		//Initialize Character
 		thief = new Thief(environment.getBountyRelativePosition(), environment);
-		bountyHunter = new BountyHunter();
+		bountyHunter = new BountyHunter(environment);
 	}
 	
 	//Draw
@@ -77,6 +83,27 @@ public class Game extends PApplet{
 		environment.draw();
 		drawThief();
 		drawBountyHunter();
+		
+		//Detect Game End
+		if(detectGameEnd()){
+			System.out.println("Coins Collected: " + thief.getCoins());
+			System.out.println("Time Passed: ");
+			noLoop();
+		}
+	}
+	
+	public void keyPressed(){
+		if(key == CODED){
+			if(keyCode == LEFT){
+				bountyHunter.setDirection(Constants.MOVELEFT);
+			}else if(keyCode == RIGHT){
+				bountyHunter.setDirection(Constants.MOVERIGHT);
+			}else if(keyCode == UP){
+				bountyHunter.setDirection(Constants.MOVEUP);
+			}else if(keyCode == DOWN){
+				bountyHunter.setDirection(Constants.MOVEDOWN);
+			}
+		}
 	}
 	
 	/* Private Functions */
@@ -86,14 +113,16 @@ public class Game extends PApplet{
 		int[] target = thief.getNextTarget();
 		if(target == null)
 			return;
-
-		kinematicThief = SeekAlign.update(kinematicThief, target, Constants.MVTHIEF, Constants.MRTHIEF);
+		
+		float targetOrientation = thief.getTargetOrientation(target);
+		kinematicThief = SeekAlign.update(kinematicThief, target, targetOrientation, Constants.MVTHIEF, Constants.MRTHIEF);
 		
 		int newX = (int)kinematicThief.position.x;
 		int newY = (int)kinematicThief.position.y;
 		
 		if(newX == target[0] && newY == target[1]){
 			thief.move(target);
+			thiefPosition = environment.getThiefPosition();
 		}
 	}
 	
@@ -103,7 +132,18 @@ public class Game extends PApplet{
 		if(target == null)
 			return;
 		
-		kinematicBounty = SeekAlign.update(kinematicBounty, target, Constants.MVBOUNTYHUNTER, Constants.MRBOUNTYHUNTER);
+		float targetOrientation = bountyHunter.getTargetOrientation(target);
+		
+		kinematicBounty = SeekAlign.update(kinematicBounty, target, targetOrientation, Constants.MVBOUNTYHUNTER, Constants.MRBOUNTYHUNTER);
+		
+		int newX = (int)kinematicBounty.position.x;
+		int newY = (int)kinematicBounty.position.y;
+		
+		if(newX == target[0] && newY == target[1]){
+			bountyHunter.move();
+			bountyPosition = environment.getBountyHunterPosition();
+		}
+		
 	}
 	
 	//Draw thief
@@ -123,6 +163,17 @@ public class Game extends PApplet{
 		rotate(kinematicBounty.orientation);
 		bountyShape.drawShape();
 		popMatrix();
+	}
+	
+	//Detect Game End
+	private boolean detectGameEnd(){
+		int remainingCoins = totalCoins - thief.getCoins();
+		if((thiefPosition[0] == bountyPosition[0]) && (thiefPosition[1] == bountyPosition[1]))
+			return true;
+		else if(remainingCoins == 0)
+			return true;
+			
+		return false;
 	}
 	
 	/* Main */

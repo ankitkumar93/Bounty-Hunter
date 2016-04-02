@@ -20,12 +20,17 @@ public class Graph {
 	private int cellWidth;
 	private int cellHeight;
 	
+	//Hash Map of Nodes Explored
+	private HashMap<Integer, Node> nodeMap;
+	
 	public Graph(int state, int cellWidth, int cellHeight){
 		int coord[] = {0, 0};
 		position = new Node(state, coord);
 		
 		this.cellWidth = cellWidth;
 		this.cellHeight = cellHeight;
+		
+		nodeMap = new HashMap<Integer, Node>();
 	}
 	
 	//Localize
@@ -59,9 +64,6 @@ public class Graph {
 	
 	public void populate(int[][] nodes, int size){
 		
-		//Construct Hash-Map of Nodes
-		HashMap<Integer, Node> nodeMap = new HashMap<Integer, Node>();
-		
 		int mid = (size - 1)/2;
 		int currentnode = (mid*size) + mid;
 		
@@ -81,8 +83,8 @@ public class Graph {
 			int index = indexQueue.remove();
 			Node current = nodeQueue.remove();
 			
-			int x = index%size;
-			int y = index/size;
+			int x = index%size + offset[0];
+			int y = index/size + offset[1];
 			
 			//Neighbor Indexes
 			int[] left = {y, x - 1};
@@ -94,7 +96,8 @@ public class Graph {
 			
 			//Left Node
 			if(reachable){
-				int neighbor = left[1] + (left[0] *size);
+				int[] coord = {left[1] - offset[1], left[0] - offset[0]};
+				int neighbor = coord[0] + (coord[1] *size);
 				Node leftNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					leftNeighbor = nodeMap.get(neighbor);
@@ -102,7 +105,6 @@ public class Graph {
 				}else if(current.getNeighbour(Constants.LEFT) != null){
 					nodeMap.put(neighbor, current.getNeighbour(Constants.LEFT));
 				}else{
-					int[] coord = {left[1] - offset[1], left[0] - offset[0]};
 					leftNeighbor = new Node(nodes[left[0]][left[1]], coord);
 					current.setNeighbour(Constants.LEFT, leftNeighbor);
 					nodeQueue.add(leftNeighbor);
@@ -115,7 +117,8 @@ public class Graph {
 			
 			//Right Node
 			if(reachable){
-				int neighbor = right[1] + (right[0] *size);
+				int[] coord = {right[1] - offset[1], right[0] - offset[0]};
+				int neighbor = coord[0] + (coord[1] *size);
 				Node rightNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					rightNeighbor = nodeMap.get(neighbor);
@@ -123,7 +126,6 @@ public class Graph {
 				}else if(current.getNeighbour(Constants.RIGHT) != null){
 					nodeMap.put(neighbor, current.getNeighbour(Constants.RIGHT));
 				}else{
-					int[] coord = {right[1] - offset[1], right[0] - offset[0]};
 					rightNeighbor = new Node(nodes[right[0]][right[1]], coord);
 					current.setNeighbour(Constants.RIGHT, rightNeighbor);
 					nodeQueue.add(rightNeighbor);
@@ -136,7 +138,8 @@ public class Graph {
 			
 			//Top Node
 			if(reachable){
-				int neighbor = top[1] + (top[0] *size);
+				int[] coord = {top[1] - offset[1], top[0] - offset[0]};
+				int neighbor = coord[0] + (coord[1] *size);
 				Node topNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					topNeighbor = nodeMap.get(neighbor);
@@ -144,7 +147,6 @@ public class Graph {
 				}else if(current.getNeighbour(Constants.TOP) != null){
 					nodeMap.put(neighbor, current.getNeighbour(Constants.TOP));
 				}else{
-					int[] coord = {top[1] - offset[1], top[0] - offset[0]};
 					topNeighbor = new Node(nodes[top[0]][top[1]], coord);
 					current.setNeighbour(Constants.TOP, topNeighbor);
 					nodeQueue.add(topNeighbor);
@@ -157,7 +159,8 @@ public class Graph {
 			
 			//Bottom Node
 			if(reachable){
-				int neighbor = bottom[1] + (bottom[0] *size);
+				int[] coord = {bottom[1] - offset[1], bottom[0] - offset[0]};
+				int neighbor = coord[0] + (coord[1] *size);
 				Node bottomNeighbor = null;
 				if(nodeMap.containsKey(neighbor)){
 					bottomNeighbor = nodeMap.get(neighbor);
@@ -165,7 +168,6 @@ public class Graph {
 				}else if(current.getNeighbour(Constants.BOTTOM) != null){
 					nodeMap.put(neighbor, current.getNeighbour(Constants.BOTTOM));
 				}else{
-					int[] coord = {bottom[1] - offset[1], bottom[0] - offset[0]};
 					bottomNeighbor = new Node(nodes[bottom[0]][bottom[1]], coord);
 					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
 					nodeQueue.add(bottomNeighbor);

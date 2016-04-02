@@ -31,6 +31,13 @@ public class Constants {
 	public final static int COINEDGE = 1;
 	public final static int NOCOINEDGE = 2;
 	
+	//Movement Directions for Bounty Hunter
+	public final static int DONTMOVE = -1;
+	public final static int MOVELEFT = 0;
+	public final static int MOVERIGHT = 1;
+	public final static int MOVEUP = 2;
+	public final static int MOVEDOWN = 3;
+	
 	/* Character Parameters */
 	public static final int[] THIEFPOS = {0,0};
 	public static final int[] BOUNTYHUNTERPOS = {9,9};
@@ -46,7 +53,7 @@ public class Constants {
 	/* Tunable Parameters */
 	
 	//Max Velocities
-	public final static int MVTHIEF = 5;
+	public final static int MVTHIEF = 2;
 	public final static int MVBOUNTYHUNTER = 2;
 	
 	//Max Rotation

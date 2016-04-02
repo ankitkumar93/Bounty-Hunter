@@ -128,6 +128,14 @@ public class Thief {
 		return nextTarget;
 	}
 	
+	//Get Target Orientation
+	public float getTargetOrientation(int[] target){
+		int[] currentPosition = graph.localize(graph.getPosition().getPosition());
+		float targetOrientation =  (float)Math.atan2(target[1] - currentPosition[1], target[0] - currentPosition[0]);
+		
+		return targetOrientation;
+	}
+	
 	//Move to a Node
 	public void move(int[] target){
 		int[] prevPosition = graph.getPosition().getPosition();

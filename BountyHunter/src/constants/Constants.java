@@ -33,6 +33,11 @@ public class Constants {
 	public static final float THIEFORIENTATION = 0.f;
 	public static final float BOUNTYHUNTERRORIENTATION = -(float)(Math.PI);
 	
+	/* Decision Tree Return Values */
+	public static final int FLEEALERT = 0;
+	public static final int CONTINUE = 1;
+	public static final int NEWGOAL = 2;
+	
 	
 	/* Tunable Parameters */
 	
@@ -48,5 +53,5 @@ public class Constants {
 	public final static int PREDICTIONTI = 1;
 	
 	//Radiuses
-	public final static int ROVTHIEF = 5;
+	public final static int ROVTHIEF = 15;
 }

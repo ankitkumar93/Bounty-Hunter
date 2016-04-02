@@ -42,7 +42,8 @@ public class Thief {
 	private PathFinder pathFinder;
 	private PathFollower pathFollower;
 	
-	private boolean goalFlag = true;
+	private boolean goalFlag;
+	private boolean decisionFlag;
 	
 	//Constructor
 	public Thief(int[] bountyPosition, Environment environment){
@@ -63,6 +64,8 @@ public class Thief {
 		coins = 0;
 		neighbourMatrixSize = radiusOfVision*2 + 1;
 		this.bountyPosition = bountyPosition;
+		this.decisionFlag = true;
+		this.goalFlag = false;
 		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
@@ -76,7 +79,7 @@ public class Thief {
 	//AI Updation
 	public void update(){
 		//AI Updation Method
-		if(goalFlag){
+		if(decisionFlag){
 		
 			//Compute the Goal
 			Node goal = goalDecider.update(bountyPosition);
@@ -85,7 +88,8 @@ public class Thief {
 			
 			pathFollower.setPath(path);
 			
-			goalFlag = false;
+			goalFlag = true;
+			decisionFlag = false;
 		}
 	}
 	
@@ -96,7 +100,11 @@ public class Thief {
 		Node target = pathFollower.getNextTarget(graph.getPosition());
 		if(target != null){
 			nextTarget = graph.localize(target.getPosition());
-		}
+		}else
+			goalFlag = false;
+		
+		if(nextTarget == null)
+			goalFlag = false;
 		
 		return nextTarget;
 	}
@@ -138,6 +146,9 @@ public class Thief {
 		
 		//Update the Graph
 		updateGraph();
+		
+		//Enable Decision Making
+		decisionFlag = true;
 		
 	}
 	

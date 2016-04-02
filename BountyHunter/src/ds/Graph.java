@@ -49,6 +49,7 @@ public class Graph {
 	}
 	
 	public void move(int flag){
+		position.updateEdgeWeight(flag, Constants.NOCOINEDGE);
 		position = position.getNeighbour(flag);
 	}
 	

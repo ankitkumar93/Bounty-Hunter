@@ -27,6 +27,10 @@ public class Constants {
 	public final static int CELLWIDTH = 50;
 	public final static int CELLHEIGHT = 50;
 	
+	//Edge Weights
+	public final static int COINEDGE = 1;
+	public final static int NOCOINEDGE = 2;
+	
 	/* Character Parameters */
 	public static final int[] THIEFPOS = {0,0};
 	public static final int[] BOUNTYHUNTERPOS = {9,9};
@@ -42,7 +46,7 @@ public class Constants {
 	/* Tunable Parameters */
 	
 	//Max Velocities
-	public final static int MVTHIEF = 2;
+	public final static int MVTHIEF = 5;
 	public final static int MVBOUNTYHUNTER = 2;
 	
 	//Max Rotation
@@ -53,5 +57,5 @@ public class Constants {
 	public final static int PREDICTIONTI = 1;
 	
 	//Radiuses
-	public final static int ROVTHIEF = 15;
+	public final static int ROVTHIEF = 2;
 }

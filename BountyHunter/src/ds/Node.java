@@ -106,6 +106,24 @@ public class Node {
 			return wb;
 	}
 	
+	//Update the Weight of Neighbor Edge
+	public void updateEdgeWeight(int direction, int edgeWeight){
+		switch(direction){
+			case Constants.LEFT:
+				wl = edgeWeight;
+				break;
+			case Constants.RIGHT:
+				wr = edgeWeight;
+				break;
+			case Constants.TOP:
+				wt = edgeWeight;
+				break;
+			case Constants.BOTTOM:
+				wb = edgeWeight;
+				break;
+		}
+	}
+	
 	//Get Position of the Node
 	public int[] getPosition(){
 		int coord[] = {x, y};
@@ -114,10 +132,10 @@ public class Node {
 	
 	/*Private Helper Functions*/
 	private int getWeight(Node node){
-		int xDiff = Math.abs(node.x - x);
-		int yDiff = Math.abs(node.y - y);
-		
-		return xDiff + yDiff;
+		if(node.state == Constants.COIN)
+			return 1;
+		else
+			return 2;
 	}
 	
 	/* Overrides */

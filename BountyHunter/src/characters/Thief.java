@@ -6,6 +6,7 @@ package characters;
 
 import java.util.List;
 
+import AI.DecisionMaking;
 import AI.GoalDecider;
 import AI.PathFinder;
 import AI.PathFollower;
@@ -34,6 +35,9 @@ public class Thief {
 	//Last Known Bounty Hunter's Position
 	int[] bountyPosition;
 	
+	//Frame Data
+	private int frameID;
+	
 	//Environment (Limit Access)
 	private Environment environment;
 	
@@ -41,6 +45,7 @@ public class Thief {
 	private GoalDecider goalDecider;
 	private PathFinder pathFinder;
 	private PathFollower pathFollower;
+	private DecisionMaking decisionMaking;
 	
 	private boolean goalFlag;
 	private boolean decisionFlag;
@@ -58,19 +63,21 @@ public class Thief {
 		this.environment = environment;
 		
 		//set tunable parameters
-		radiusOfVision = Constants.ROVTHIEF;
+		this.radiusOfVision = Constants.ROVTHIEF;
 		
 		//Initialize parameters
-		coins = 0;
-		neighbourMatrixSize = radiusOfVision*2 + 1;
+		this.coins = 0;
+		this.neighbourMatrixSize = radiusOfVision*2 + 1;
 		this.bountyPosition = bountyPosition;
 		this.decisionFlag = true;
 		this.goalFlag = false;
+		this.frameID = 0;
 		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
 		pathFinder = new PathFinder(graph);
 		pathFollower = new PathFollower();
+		decisionMaking = new DecisionMaking();
 		
 		//Update the Graph Initially
 		updateGraph();
@@ -78,18 +85,31 @@ public class Thief {
 	
 	//AI Updation
 	public void update(){
+		frameID++;
 		//AI Updation Method
 		if(decisionFlag){
-		
-			//Compute the Goal
-			Node goal = goalDecider.update(bountyPosition);
+			decisionFlag = false;
 			
+			Node goal = null;
+			
+			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag);
+			if(decision == Constants.CONTINUE)
+				return;
+			
+			if(decision == Constants.NEWGOAL){
+				goal = getNewGoal();
+				goalFlag = true;
+			}if(goal == null){
+				return;
+			}
+			
+			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
+			
+			//Path Finding
 			List<Node> path = pathFinder.search(goal);
 			
+			//Setup Path Follower
 			pathFollower.setPath(path);
-			
-			goalFlag = true;
-			decisionFlag = false;
 		}
 	}
 	
@@ -100,11 +120,10 @@ public class Thief {
 		Node target = pathFollower.getNextTarget(graph.getPosition());
 		if(target != null){
 			nextTarget = graph.localize(target.getPosition());
-		}else
+		}else{
 			goalFlag = false;
-		
-		if(nextTarget == null)
-			goalFlag = false;
+			decisionFlag = true;
+		}
 		
 		return nextTarget;
 	}
@@ -157,12 +176,22 @@ public class Thief {
 		return coins;
 	}
 	
-	//Private Functions
+	/* Private Functions */
+	
+	//Update Graph
 	private void updateGraph(){
 		//Ask the Environment for Neighbor Matrix
 		int neighbours[][] = environment.getNeighbours(radiusOfVision);
 		
 		//Supply the Matrix to the Graph
 		graph.populate(neighbours, neighbourMatrixSize);
+	}
+	
+	/* Decision Functions */
+	
+	//Compute a New Goal
+	public Node getNewGoal(){
+		Node goal = goalDecider.update(bountyPosition);
+		return goal;
 	}
 }

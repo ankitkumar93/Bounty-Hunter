@@ -119,4 +119,12 @@ public class Node {
 		
 		return xDiff + yDiff;
 	}
+	
+	/* Overrides */
+	@Override
+	public String toString() {
+		String str = "X:" + x + " Y:"  +y;
+		return str;
+	}
+	
 }

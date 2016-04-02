@@ -93,8 +93,6 @@ public class Thief {
 	public int[] getNextTarget(){
 		int[] nextTarget = null;
 		
-//		System.out.println(graph.getPosition().getPosition()[0] + ":" + graph.getPosition().getPosition()[1]);
-		
 		Node target = pathFollower.getNextTarget(graph.getPosition());
 		if(target != null){
 			nextTarget = graph.localize(target.getPosition());
@@ -104,13 +102,11 @@ public class Thief {
 	}
 	
 	//Move to a Node
-	public int move(int[] target){
+	public void move(int[] target){
 		int[] prevPosition = graph.getPosition().getPosition();
 		int[] newPosition = graph.quantize(target);
 		
 		int[] directionVec = {newPosition[0] - prevPosition[0], newPosition[1] - prevPosition[1]};
-		
-		//System.out.println(directionVec[0] + ":" + directionVec[1]);
 		
 		int direction = 0;
 		
@@ -124,24 +120,24 @@ public class Thief {
 		else if(directionVec[1] == -1)
 			direction = Constants.TOP;
 		
+		//Set Current Position to Empty State
+		Node position = graph.getPosition();
+		position.setState(Constants.EMPTY);
+		environment.updateThiefPosition(target, Constants.EMPTY);
+		
 		//Handle Movement to a Node
 		graph.move(direction);
 		
-//		System.out.println(direction);
-		
-//		System.out.println(graph.getPosition().getPosition()[0] + ":" + graph.getPosition().getPosition()[1]);
-		
-		//Handle coins
-		Node position = graph.getPosition();
-		if(position.getState() == Constants.COIN){
+		//Handle New State
+		Node position2 = graph.getPosition();
+		if(position2.getState() == Constants.COIN){
 			coins++;
-			position.setState(Constants.EMPTY);
 		}
+		position2.setState(Constants.THIEF);
+		environment.updateState(target, Constants.THIEF);
 		
 		//Update the Graph
 		updateGraph();
-		
-		return position.getState();
 		
 	}
 	

@@ -14,8 +14,9 @@ public class PathFollower {
 	
 	public Node getNextTarget(Node currentNode){
 		int currentIndex = path.indexOf(currentNode);
-		if(currentIndex == -1)
+		if(currentIndex == -1){
 			return null;
+		}
 		
 		int nextIndex = currentIndex + 1;
 		

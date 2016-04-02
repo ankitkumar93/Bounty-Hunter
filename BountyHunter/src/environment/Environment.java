@@ -130,7 +130,6 @@ public class Environment{
 					neighborMatrix[i][j] = graph.matrix[offsetX][offsetY];
 				else
 					neighborMatrix[i][j] = Constants.OUTOFBOUNDS;
-				
 			}
 		}
 		
@@ -141,6 +140,17 @@ public class Environment{
 	public void updateState(int[] target, int state){
 		int[] targetNode = graph.quantize(target[0], target[1]);
 		graph.setState(targetNode[0], targetNode[1], state);
+	}
+	
+	//Update Position of Thief
+	public void updateThiefPosition(int[] target, int state){
+		graph.setState(thiefPosition[0], thiefPosition[1], state);
+		thiefPosition = graph.quantize(target[0], target[1]);
+	}
+	
+	//Update Position of Bounty Hunter
+	public void updateBountyHunterPosition(int[] target){
+		thiefPosition = graph.quantize(target[0], target[1]);
 	}
 	
 	

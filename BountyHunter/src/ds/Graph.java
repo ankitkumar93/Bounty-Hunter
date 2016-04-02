@@ -66,7 +66,7 @@ public class Graph {
 		
 		int[] nodePosition = position.getPosition();
 		
-		int[] offset = {mid - nodePosition[0], mid - nodePosition[1]};
+		int[] offset = {mid - nodePosition[1], mid - nodePosition[0]};
 		
 		nodeMap.put(currentnode, position);
 		
@@ -98,8 +98,9 @@ public class Graph {
 				if(nodeMap.containsKey(neighbor)){
 					leftNeighbor = nodeMap.get(neighbor);
 					current.setNeighbour(Constants.LEFT, leftNeighbor);
-				}
-				else{
+				}else if(current.getNeighbour(Constants.LEFT) != null){
+					nodeMap.put(neighbor, current.getNeighbour(Constants.LEFT));
+				}else{
 					int[] coord = {left[1] - offset[1], left[0] - offset[0]};
 					leftNeighbor = new Node(nodes[left[0]][left[1]], coord);
 					current.setNeighbour(Constants.LEFT, leftNeighbor);
@@ -118,8 +119,9 @@ public class Graph {
 				if(nodeMap.containsKey(neighbor)){
 					rightNeighbor = nodeMap.get(neighbor);
 					current.setNeighbour(Constants.RIGHT, rightNeighbor);
-				}
-				else{
+				}else if(current.getNeighbour(Constants.RIGHT) != null){
+					nodeMap.put(neighbor, current.getNeighbour(Constants.RIGHT));
+				}else{
 					int[] coord = {right[1] - offset[1], right[0] - offset[0]};
 					rightNeighbor = new Node(nodes[right[0]][right[1]], coord);
 					current.setNeighbour(Constants.RIGHT, rightNeighbor);
@@ -138,8 +140,9 @@ public class Graph {
 				if(nodeMap.containsKey(neighbor)){
 					topNeighbor = nodeMap.get(neighbor);
 					current.setNeighbour(Constants.TOP, topNeighbor);
-				}
-				else{
+				}else if(current.getNeighbour(Constants.TOP) != null){
+					nodeMap.put(neighbor, current.getNeighbour(Constants.TOP));
+				}else{
 					int[] coord = {top[1] - offset[1], top[0] - offset[0]};
 					topNeighbor = new Node(nodes[top[0]][top[1]], coord);
 					current.setNeighbour(Constants.TOP, topNeighbor);
@@ -158,8 +161,9 @@ public class Graph {
 				if(nodeMap.containsKey(neighbor)){
 					bottomNeighbor = nodeMap.get(neighbor);
 					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);
-				}
-				else{
+				}else if(current.getNeighbour(Constants.BOTTOM) != null){
+					nodeMap.put(neighbor, current.getNeighbour(Constants.BOTTOM));
+				}else{
 					int[] coord = {bottom[1] - offset[1], bottom[0] - offset[0]};
 					bottomNeighbor = new Node(nodes[bottom[0]][bottom[1]], coord);
 					current.setNeighbour(Constants.BOTTOM, bottomNeighbor);

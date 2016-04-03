@@ -72,14 +72,16 @@ public class GoalDecider {
 	}
 	
 	//Decide the Goal
-	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition){
+	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition, int[] thiefPosition){
 		Node output = null;
-		int maxDist = Integer.MIN_VALUE;
+		int minDist = Integer.MAX_VALUE;
 		for(Node target: possibleGoal){
-			int tempDist = getDist(target, bountyPosition);
-			if(tempDist > maxDist){
+			int tempDistBounty = getDist(target, bountyPosition);
+			int tempDistThief = getDist(target, thiefPosition);
+			int tempDist = tempDistThief + tempDistBounty;
+			if(tempDist < minDist){
 				output = target;
-				maxDist = tempDist;
+				minDist = tempDist;
 			}
 		}
 		
@@ -94,11 +96,11 @@ public class GoalDecider {
 		this.graph = graph;
 	}
 	
-	public Node update(int[] bountyPosition){
+	public Node update(int[] bountyPosition, int[] thiefPosition){
 		Node goal = null;
 		
 		List<Node> possibleGoals = getPossibleGoals();
-		goal = decideGoal(possibleGoals, bountyPosition);
+		goal = decideGoal(possibleGoals, bountyPosition, thiefPosition);
 		
 		return goal;
 	}

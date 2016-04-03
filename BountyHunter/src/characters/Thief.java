@@ -7,6 +7,7 @@ package characters;
 import java.util.List;
 
 import AI.DecisionMaking;
+import AI.FleeGoalDecider;
 import AI.GoalDecider;
 import AI.PathFinder;
 import AI.PathFollower;
@@ -43,6 +44,7 @@ public class Thief {
 	
 	/* AI Modules */
 	private GoalDecider goalDecider;
+	private FleeGoalDecider fleeGoalDecider;
 	private PathFinder pathFinder;
 	private PathFollower pathFollower;
 	private DecisionMaking decisionMaking;
@@ -75,6 +77,7 @@ public class Thief {
 		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
+		fleeGoalDecider = new FleeGoalDecider(graph);
 		pathFinder = new PathFinder(graph);
 		pathFollower = new PathFollower();
 		decisionMaking = new DecisionMaking();
@@ -92,22 +95,18 @@ public class Thief {
 			
 			Node goal = null;
 			
-			if(graph.getPosition().getPosition()[0] == 9 && graph.getPosition().getPosition()[1] == 7){
-				System.out.println("BOOO!");
-			}
-			
 			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag);
 			if(decision == Constants.CONTINUE)
 				return;
 			
-			if(decision == Constants.NEWGOAL){
-				goal = getNewGoal();
-				goalFlag = true;
-			}if(goal == null){
+			goal = getNewGoal(decision);
+			goalFlag = true;
+			
+			if(goal == null){
 				return;
 			}
 			
-			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
+//			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
 			
 			//Path Finding
 			List<Node> path = pathFinder.search(goal, bountyPosition);
@@ -202,8 +201,13 @@ public class Thief {
 	/* Decision Functions */
 	
 	//Compute a New Goal
-	public Node getNewGoal(){
-		Node goal = goalDecider.update(bountyPosition);
+	public Node getNewGoal(int decision){
+		Node goal = null;
+		if(decision ==  Constants.NEWGOAL)
+			goal = goalDecider.update(bountyPosition, graph.getPosition().getPosition());
+		else if(decision == Constants.FLEEALERT)
+			goal = fleeGoalDecider.update(bountyPosition);
+			
 		return goal;
 	}
 }

@@ -65,4 +65,7 @@ public class Constants {
 	
 	//Radiuses
 	public final static int ROVTHIEF = 2;
+	
+	//Heuristic INFINITY
+	public final static int INFINITY = 500;
 }

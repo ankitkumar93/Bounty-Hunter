@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import behavior.Heuristic;
 import constants.Constants;
 import ds.Graph;
 import ds.Node;
@@ -22,7 +23,7 @@ public class PathFinder {
 		this.graph = graph;
 	}
 	
-	public List<Node> search(Node target){
+	public List<Node> search(Node target, int[] bountyPosition){
 		
 		Node source = graph.getPosition();
 		
@@ -67,11 +68,11 @@ public class PathFinder {
 				if(!cl.contains(neighbor)){
 					if(!ol.contains(neighbor)){
 						PathNode newNode = new PathNode(neighbor);
-						updateETC(newNode, pathMap.get(currentNode));
+						updateETC(newNode, pathMap.get(currentNode), bountyPosition);
 						pathMap.put(neighbor, newNode);
 						ol.add(neighbor);
 					}else{
-						updateETC(pathMap.get(neighbor), pathMap.get(currentNode));
+						updateETC(pathMap.get(neighbor), pathMap.get(currentNode), bountyPosition);
 					}
 				}
 			}
@@ -114,14 +115,17 @@ public class PathFinder {
 	}
 	
 	//Update the ETC of a PathNode
-	private void updateETC(PathNode dest, PathNode source){
+	private void updateETC(PathNode dest, PathNode source, int[] bountyPosition){
 		
 		int weight = source.node.getEdgeWeight(dest.node);
+		int heuristic = Heuristic.getHeuristic(bountyPosition, dest.node.getPosition());
 		
-		int etc = source.etc + weight;
+		int csf = (weight + source.csf);
+		int etc = csf + heuristic;
 		
 		if(etc < dest.etc){
 			dest.etc = etc;
+			dest.csf = csf;
 			dest.parent = source;
 		}
 	}

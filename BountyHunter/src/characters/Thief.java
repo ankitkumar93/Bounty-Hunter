@@ -106,7 +106,7 @@ public class Thief {
 			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
 			
 			//Path Finding
-			List<Node> path = pathFinder.search(goal);
+			List<Node> path = pathFinder.search(goal, bountyPosition);
 			
 			//Setup Path Follower
 			pathFollower.setPath(path);
@@ -170,6 +170,10 @@ public class Thief {
 		}
 		position2.setState(Constants.THIEF);
 		environment.updateState(target, Constants.THIEF);
+		
+		if(position2.getPosition()[0] == 9 && position2.getPosition()[1] == 7){
+			System.out.println("NOOOO!");
+		}
 		
 		//Update the Graph
 		updateGraph();

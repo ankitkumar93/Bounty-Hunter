@@ -92,6 +92,10 @@ public class Thief {
 			
 			Node goal = null;
 			
+			if(graph.getPosition().getPosition()[0] == 9 && graph.getPosition().getPosition()[1] == 7){
+				System.out.println("BOOO!");
+			}
+			
 			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag);
 			if(decision == Constants.CONTINUE)
 				return;
@@ -170,10 +174,6 @@ public class Thief {
 		}
 		position2.setState(Constants.THIEF);
 		environment.updateState(target, Constants.THIEF);
-		
-		if(position2.getPosition()[0] == 9 && position2.getPosition()[1] == 7){
-			System.out.println("NOOOO!");
-		}
 		
 		//Update the Graph
 		updateGraph();

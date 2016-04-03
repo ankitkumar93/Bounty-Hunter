@@ -97,12 +97,6 @@ public class GoalDecider {
 	public Node update(int[] bountyPosition){
 		Node goal = null;
 		
-		Node myPosition = graph.getPosition();
-		
-		if(myPosition.getPosition()[0] == 9 && myPosition.getPosition()[1] == 7){
-			System.out.println("BOOO!");
-		}
-		
 		List<Node> possibleGoals = getPossibleGoals();
 		goal = decideGoal(possibleGoals, bountyPosition);
 		

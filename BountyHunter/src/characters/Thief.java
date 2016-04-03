@@ -198,10 +198,19 @@ public class Thief {
 		graph.populate(neighbours, neighbourMatrixSize);
 	}
 	
+	//Change Bounty's Local Position
+	private void updateBountyPosition(int[] relativePositoin){
+		int[] thiefPosition = graph.getPosition().getPosition();
+		bountyPosition[0] = thiefPosition[0] + relativePositoin[0];
+		bountyPosition[1] = thiefPosition[1] + relativePositoin[1];
+	}
+	
 	/* Decision Functions */
 	
 	//Compute a New Goal
 	public Node getNewGoal(int decision){
+		if(environment.checkBountyPositionChanged())
+			updateBountyPosition(environment.getBountyRelativePosition());
 		Node goal = null;
 		if(decision ==  Constants.NEWGOAL)
 			goal = goalDecider.update(bountyPosition, graph.getPosition().getPosition());

@@ -37,6 +37,9 @@ public class Environment{
 	private int[] thiefPosition;
 	private int[] bountyPosition;
 	
+	//Position Update Flag
+	private boolean bountyLocationUpdated;
+	
 	//Data Structure
 	private EnvironMap graph;
 	
@@ -61,6 +64,9 @@ public class Environment{
 		
 		//Initialize Shapes
 		initializeShapes();
+		
+		//Flag True Initially
+		bountyLocationUpdated = true;
 	}
 	
 	
@@ -99,6 +105,13 @@ public class Environment{
 		}
 		
 		return coins;
+	}
+	
+	//Check if Bounty Hunter Location Changed (Visibility)
+	public boolean checkBountyPositionChanged(){
+		boolean output = this.bountyLocationUpdated;
+		this.bountyLocationUpdated = false;
+		return output;
 	}
 	
 	//Get Relative Position of the Bounty Hunter From the Thief
@@ -159,11 +172,13 @@ public class Environment{
 	public void updateThiefPosition(int[] target, int state){
 		graph.setState(thiefPosition[0], thiefPosition[1], state);
 		thiefPosition = graph.quantize(target[0], target[1]);
+		proximityCheck();
 	}
 	
 	//Update Position of Bounty Hunter
 	public void updateBountyHunterPosition(int[] target){
 		bountyPosition = target.clone();
+		proximityCheck();
 	}
 	
 	
@@ -198,5 +213,12 @@ public class Environment{
 	private void initializeShapes(){
 		coinShape = new CoinShape(mainApplet);
 		obstacleShape = new ObstacleShape(mainApplet);
+	}
+	
+	//Check if the Bounty Hunter is in Range of the Thief
+	private void proximityCheck(){
+		int[] relativePosition = {bountyPosition[0] - thiefPosition[0], bountyPosition[1] - thiefPosition[1]};
+		if(relativePosition[0] <= Constants.ROVTHIEF && relativePosition[1] <= Constants.ROVTHIEF)
+			this.bountyLocationUpdated = true;
 	}
 }

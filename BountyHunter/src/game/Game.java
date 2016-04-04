@@ -31,6 +31,9 @@ public class Game extends PApplet{
 	
 	//Coin Data
 	private int totalCoins;
+	//Time
+	private long startTime;
+	private long endTime;
 	
 	
 	/* Processing Data */
@@ -66,10 +69,15 @@ public class Game extends PApplet{
 		//Initialize Character
 		thief = new Thief(environment.getBountyRelativePosition(), environment);
 		bountyHunter = new BountyHunter(environment);
+		
+		//Initialize start time
+		startTime = 0;
 	}
 	
 	//Draw
 	public void draw(){
+		if(startTime==0)
+			startTime = System.currentTimeMillis();
 		background(255);
 		
 		//Updations
@@ -86,8 +94,9 @@ public class Game extends PApplet{
 		
 		//Detect Game End
 		if(detectGameEnd()){
+			endTime = System.currentTimeMillis();
 			System.out.println("Coins Collected: " + thief.getCoins());
-			System.out.println("Time Passed: ");
+			System.out.println("Time Passed: " + (endTime-startTime));
 			noLoop();
 		}
 	}

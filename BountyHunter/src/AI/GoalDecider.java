@@ -78,7 +78,9 @@ public class GoalDecider {
 		for(Node target: possibleGoal){
 			int tempDistBounty = getDist(target, bountyPosition);
 			int tempDistThief = getDist(target, thiefPosition);
-			int tempDist = tempDistThief + tempDistBounty;
+			if(tempDistBounty == 0)
+				tempDistBounty = Constants.INFINITY;
+			int tempDist = tempDistThief + (30/tempDistBounty);
 			if(tempDist < minDist){
 				output = target;
 				minDist = tempDist;

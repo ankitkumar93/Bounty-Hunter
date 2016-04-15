@@ -1,5 +1,7 @@
 package game;
 
+import java.util.Date;
+
 import behavior.SeekAlign;
 import characters.BountyHunter;
 import characters.Thief;
@@ -31,6 +33,11 @@ public class Game extends PApplet{
 	
 	//Coin Data
 	private int totalCoins;
+	
+	//Time Data
+	private int totalTime;
+	private Date beginDate;
+	private Date endDate;
 	
 	
 	/* Processing Data */
@@ -66,6 +73,11 @@ public class Game extends PApplet{
 		//Initialize Character
 		thief = new Thief(environment.getBountyRelativePosition(), environment);
 		bountyHunter = new BountyHunter(environment);
+		
+		//Initialize Time and Date
+		totalTime = 0;
+		beginDate = new Date();
+		endDate = null;
 	}
 	
 	//Draw
@@ -86,8 +98,10 @@ public class Game extends PApplet{
 		
 		//Detect Game End
 		if(detectGameEnd()){
+			endDate = new Date();
+			totalTime = (int)(endDate.getTime() - beginDate.getTime());
 			System.out.println("Coins Collected: " + thief.getCoins());
-			System.out.println("Time Passed: ");
+			System.out.println("Time Passed: " + totalTime);
 			noLoop();
 		}
 	}

@@ -37,6 +37,9 @@ public class Environment{
 	private int[] thiefPosition;
 	private int[] bountyPosition;
 	
+	//Direction Holder
+	private int bountyDirection;
+	
 	//Position Update Flag
 	private boolean bountyLocationUpdated;
 	
@@ -124,6 +127,10 @@ public class Environment{
 		return relativePosition;
 	}
 	
+	public int getBountyDirection(){
+		return this.bountyDirection;
+	} /* Get Direction of the Bounty Hunter */
+	
 	public int[] getThiefPosition(){
 		return graph.localize(thiefPosition[0], thiefPosition[1]);
 	}
@@ -176,8 +183,9 @@ public class Environment{
 	}
 	
 	//Update Position of Bounty Hunter
-	public void updateBountyHunterPosition(int[] target){
-		bountyPosition = target.clone();
+	public void updateBountyHunterPosition(int[] target, int targetDirection){
+		this.bountyPosition = target.clone();
+		this.bountyDirection = targetDirection;
 		proximityCheck();
 	}
 	
@@ -218,7 +226,8 @@ public class Environment{
 	//Check if the Bounty Hunter is in Range of the Thief
 	private void proximityCheck(){
 		int[] relativePosition = {bountyPosition[0] - thiefPosition[0], bountyPosition[1] - thiefPosition[1]};
-		if(relativePosition[0] <= Constants.ROVTHIEF && relativePosition[1] <= Constants.ROVTHIEF)
+		if(relativePosition[0] <= Constants.ROVTHIEF && relativePosition[1] <= Constants.ROVTHIEF){
 			this.bountyLocationUpdated = true;
+		}
 	}
 }

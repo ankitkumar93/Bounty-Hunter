@@ -36,6 +36,12 @@ public class Thief {
 	//Last Known Bounty Hunter's Position
 	int[] bountyPosition;
 	
+	//Last Known Bounty Hunter's Direction
+	int bountyDirection;
+	
+	//Confidence
+	private int confidence;
+	
 	//Frame Data
 	private int frameID;
 	
@@ -74,6 +80,8 @@ public class Thief {
 		this.decisionFlag = true;
 		this.goalFlag = false;
 		this.frameID = 0;
+		this.confidence = Constants.CONFIDENCE_MAX;
+		this.bountyDirection = Constants.DONTMOVE;
 		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
@@ -106,10 +114,12 @@ public class Thief {
 				return;
 			}
 			
-//			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
+			
+//			if(decision == Constants.FLEEALERT)
+//				System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
 			
 			//Path Finding
-			List<Node> path = pathFinder.search(goal, bountyPosition);
+			List<Node> path = pathFinder.search(goal, bountyPosition, this.bountyDirection, this.confidence);
 			
 			//Setup Path Follower
 			pathFollower.setPath(path);
@@ -177,8 +187,16 @@ public class Thief {
 		//Update the Graph
 		updateGraph();
 		
+		//Update Confidence
+		this.confidence = Math.max(this.confidence - Constants.CONFIDENCE_DECAY_RATE , 0);
+		
 		//Enable Decision Making
 		decisionFlag = true;
+		
+		//Check for Bounty Seen
+		if(environment.checkBountyPositionChanged()){
+			updateBountyPosition(environment.getBountyRelativePosition(), environment.getBountyDirection());
+		}
 		
 	}
 	
@@ -199,23 +217,24 @@ public class Thief {
 	}
 	
 	//Change Bounty's Local Position
-	private void updateBountyPosition(int[] relativePositoin){
+	private void updateBountyPosition(int[] relativePosition, int bountyDirection){
 		int[] thiefPosition = graph.getPosition().getPosition();
-		bountyPosition[0] = thiefPosition[0] + relativePositoin[0];
-		bountyPosition[1] = thiefPosition[1] + relativePositoin[1];
+		bountyPosition[0] = thiefPosition[0] + relativePosition[0];
+		bountyPosition[1] = thiefPosition[1] + relativePosition[1];
+		this.confidence = Constants.CONFIDENCE_MAX;
+		this.bountyDirection = bountyDirection;
 	}
 	
 	/* Decision Functions */
 	
 	//Compute a New Goal
 	public Node getNewGoal(int decision){
-		if(environment.checkBountyPositionChanged())
-			updateBountyPosition(environment.getBountyRelativePosition());
 		Node goal = null;
 		if(decision ==  Constants.NEWGOAL)
-			goal = goalDecider.update(bountyPosition, graph.getPosition().getPosition());
-		else if(decision == Constants.FLEEALERT)
+			goal = goalDecider.update(bountyPosition, graph.getPosition().getPosition(), this.confidence);
+		else if(decision == Constants.FLEEALERT){
 			goal = fleeGoalDecider.update(bountyPosition);
+		}
 			
 		return goal;
 	}

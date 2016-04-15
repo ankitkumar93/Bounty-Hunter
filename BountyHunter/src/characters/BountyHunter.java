@@ -53,7 +53,7 @@ public class BountyHunter {
 	
 	public void move(){
 		position = moveDirection(direction);
-		environment.updateBountyHunterPosition(position);
+		environment.updateBountyHunterPosition(position, direction);
 		updateDirection();
 	}
 

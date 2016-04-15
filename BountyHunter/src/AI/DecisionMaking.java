@@ -14,11 +14,15 @@ public class DecisionMaking {
 	}
 	
 	public int update(int[] bountyPosition, int[] thiefPosition, boolean goalFlag){
-		int relDistanceX = Math.abs(bountyPosition[0] - thiefPosition[0]);
-		int relDistanceY = Math.abs(bountyPosition[1] - thiefPosition[1]);	
+		int diffX = bountyPosition[0] - thiefPosition[0];
+		int diffY = bountyPosition[1] - thiefPosition[1];
 		
-		if(relDistanceX <= radiusOfVision && relDistanceY <= radiusOfVision)
-			return Constants.FLEEALERT;
+		int relDistanceX = Math.abs(diffX);
+		int relDistanceY = Math.abs(diffY);	
+		
+		if(relDistanceX <= radiusOfVision && relDistanceY <= radiusOfVision){
+				return Constants.FLEEALERT;
+		}
 		
 		if(goalFlag)
 			return Constants.CONTINUE;

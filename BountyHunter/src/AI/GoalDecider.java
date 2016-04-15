@@ -72,15 +72,16 @@ public class GoalDecider {
 	}
 	
 	//Decide the Goal
-	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition, int[] thiefPosition){
+	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition, int[] thiefPosition, int confidence){
 		Node output = null;
 		int minDist = Integer.MAX_VALUE;
+		int weightConst = Constants.COLLISION_CONTROL*confidence/100;
 		for(Node target: possibleGoal){
 			int tempDistBounty = getDist(target, bountyPosition);
 			int tempDistThief = getDist(target, thiefPosition);
 			if(tempDistBounty == 0)
 				tempDistBounty = Constants.INFINITY;
-			int tempDist = tempDistThief + (30/tempDistBounty);
+			int tempDist = tempDistThief + (weightConst/tempDistBounty);
 			if(tempDist < minDist){
 				output = target;
 				minDist = tempDist;
@@ -98,11 +99,11 @@ public class GoalDecider {
 		this.graph = graph;
 	}
 	
-	public Node update(int[] bountyPosition, int[] thiefPosition){
+	public Node update(int[] bountyPosition, int[] thiefPosition, int confidence){
 		Node goal = null;
 		
 		List<Node> possibleGoals = getPossibleGoals();
-		goal = decideGoal(possibleGoals, bountyPosition, thiefPosition);
+		goal = decideGoal(possibleGoals, bountyPosition, thiefPosition, confidence);
 		
 		return goal;
 	}

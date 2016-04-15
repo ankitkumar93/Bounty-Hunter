@@ -23,7 +23,7 @@ public class PathFinder {
 		this.graph = graph;
 	}
 	
-	public List<Node> search(Node target, int[] bountyPosition){
+	public List<Node> search(Node target, int[] bountyPosition, int bountyDirection,int confidence){
 		
 		Node source = graph.getPosition();
 		
@@ -68,11 +68,11 @@ public class PathFinder {
 				if(!cl.contains(neighbor)){
 					if(!ol.contains(neighbor)){
 						PathNode newNode = new PathNode(neighbor);
-						updateETC(newNode, pathMap.get(currentNode), bountyPosition);
+						updateETC(newNode, pathMap.get(currentNode), bountyPosition, bountyDirection, confidence);
 						pathMap.put(neighbor, newNode);
 						ol.add(neighbor);
 					}else{
-						updateETC(pathMap.get(neighbor), pathMap.get(currentNode), bountyPosition);
+						updateETC(pathMap.get(neighbor), pathMap.get(currentNode), bountyPosition, bountyDirection, confidence);
 					}
 				}
 			}
@@ -115,10 +115,10 @@ public class PathFinder {
 	}
 	
 	//Update the ETC of a PathNode
-	private void updateETC(PathNode dest, PathNode source, int[] bountyPosition){
+	private void updateETC(PathNode dest, PathNode source, int[] bountyPosition, int bountyDirection, int confidence){
 		
 		int weight = source.node.getEdgeWeight(dest.node);
-		int heuristic = Heuristic.getHeuristic(bountyPosition, dest.node.getPosition());
+		int heuristic = Heuristic.getHeuristic(bountyPosition, dest.node.getPosition(), bountyDirection, confidence);
 		
 		int csf = (weight + source.csf);
 		int etc = csf + heuristic;

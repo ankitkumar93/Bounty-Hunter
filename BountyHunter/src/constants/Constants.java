@@ -38,6 +38,7 @@ public class Constants {
 	public final static int MOVEUP = 2;
 	public final static int MOVEDOWN = 3;
 	
+	
 	/* Character Parameters */
 	public static final int[] THIEFPOS = {0,0};
 	public static final int[] BOUNTYHUNTERPOS = {9,9};
@@ -64,8 +65,18 @@ public class Constants {
 	public final static int PREDICTIONTI = 1;
 	
 	//Radiuses
-	public final static int ROVTHIEF = 6;
+	public final static int ROVTHIEF = 4;
 	
 	//Heuristic INFINITY
 	public final static int INFINITY = 500;
+	
+	//Confidence
+	public final static int CONFIDENCE_MAX = 100;
+	public final static int CONFIDENCE_DECAY_RATE = 10;
+	
+	//Constant of Collision Control
+	public final static int COLLISION_CONTROL = 50;
+	
+	//Prediction Time
+	public final static int PREDICTION_TIME = 3;
 }

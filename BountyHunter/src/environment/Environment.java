@@ -112,6 +112,8 @@ public class Environment{
 	
 	//Check if Bounty Hunter Location Changed (Visibility)
 	public boolean checkBountyPositionChanged(){
+//		if(this.bountyLocationUpdated)
+//			System.out.println("Post: " + bountyPosition[0] + ":" + bountyPosition[1]);
 		boolean output = this.bountyLocationUpdated;
 		this.bountyLocationUpdated = false;
 		return output;

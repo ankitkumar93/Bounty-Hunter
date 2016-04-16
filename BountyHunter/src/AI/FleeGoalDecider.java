@@ -12,6 +12,7 @@ import ds.Node;
 public class FleeGoalDecider {
 	/* Private Variables */
 	private Graph graph;
+	private int radiusOfFlee;
 	
 	/* Private Functions */
 	//Compute Distance between two Nodes
@@ -25,46 +26,56 @@ public class FleeGoalDecider {
 		return dist;
 	}
 	
+	//Check if Inrange
+	public boolean inrange(int[] thiefPosition, Node node){
+		int[] position = node.getPosition();
+		int xDiff = Math.abs(thiefPosition[0] - position[0]);
+		int yDiff = Math.abs(thiefPosition[1] - position[1]);
+		
+		if(xDiff < this.radiusOfFlee && yDiff < this.radiusOfFlee)
+			return true;
+		
+		return false;
+	}
+	
 	//Compute possible goal states
-		private List<Node> getPossibleGoals(){
-			List<Node> output = new ArrayList<Node>();
+	private List<Node> getPossibleGoals(int[] thiefPosition){
+		List<Node> output = new ArrayList<Node>();
+		
+		//Do DFS
+		Node source = graph.getPosition();
+		Stack<Node> stack =  new Stack<Node>();
+		stack.push(source);
+		HashSet<Node> visited = new HashSet<Node>();
+		
+		while(!stack.isEmpty()){
+				
+			//Get Node and Neighbors
+			Node current = stack.pop();
 			
-			//Do DFS
-			Node source = graph.getPosition();
-			Stack<Node> stack =  new Stack<Node>();
-			stack.push(source);
-			HashSet<Node> visited = new HashSet<Node>();
+			Node top = current.getNeighbour(Constants.TOP);
+			Node bottom = current.getNeighbour(Constants.BOTTOM);
+			Node left = current.getNeighbour(Constants.LEFT);
+			Node right = current.getNeighbour(Constants.RIGHT);
+				
+			//Push Neighbors
+			if(top != null && !visited.contains(top) && inrange(thiefPosition, top))
+				stack.push(top);
+			if(bottom != null && !visited.contains(bottom) && inrange(thiefPosition, bottom))
+				stack.push(bottom);
+			if(left != null && !visited.contains(left) && inrange(thiefPosition, left))
+				stack.push(left);
+			if(right != null && !visited.contains(right) && inrange(thiefPosition, right))
+				stack.push(right);
 			
-			while(!stack.isEmpty()){
-				
-				//Get Node and Neighbors
-				Node current = stack.pop();
-				
-				Node top = current.getNeighbour(Constants.TOP);
-				Node bottom = current.getNeighbour(Constants.BOTTOM);
-				Node left = current.getNeighbour(Constants.LEFT);
-				Node right = current.getNeighbour(Constants.RIGHT);
-				
-				//Push Neighbors
-				if(top != null && !visited.contains(top))
-					stack.push(top);
-				if(bottom != null && !visited.contains(bottom))
-					stack.push(bottom);
-				if(left != null && !visited.contains(left))
-					stack.push(left);
-				if(right != null && !visited.contains(right))
-					stack.push(right);
-				
-				//Check Node
-				if(current.getState() == Constants.COIN)
-					output.add(current);
-				
-				visited.add(current);
-				
-			}
+			output.add(current);
 			
-			return output;
+			visited.add(current);
+		
 		}
+		
+		return output;
+	}
 		
 	//Decide the Goal
 	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition){
@@ -85,12 +96,13 @@ public class FleeGoalDecider {
 	//Constructor
 	public FleeGoalDecider(Graph graph){
 		this.graph = graph;
+		this.radiusOfFlee = Constants.ROFTHIEF;
 	}
 	
-	public Node update(int[] bountyPosition){
+	public Node update(int[] bountyPosition, int[] thiefPosition){
 		Node goal = null;
 		
-		List<Node> possibleGoals = getPossibleGoals();
+		List<Node> possibleGoals = getPossibleGoals(thiefPosition);
 		goal = decideGoal(possibleGoals, bountyPosition);
 		
 		return goal;

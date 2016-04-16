@@ -73,6 +73,7 @@ public class GoalDecider {
 	
 	//Decide the Goal
 	private Node decideGoal(List<Node> possibleGoal, int[] bountyPosition, int[] thiefPosition, int confidence){
+		//System.out.println("Conf: " + confidence);
 		Node output = null;
 		int minDist = Integer.MAX_VALUE;
 		int weightConst = Constants.COLLISION_CONTROL*confidence/100;

@@ -57,6 +57,7 @@ public class Thief {
 	
 	private boolean goalFlag;
 	private boolean decisionFlag;
+	private boolean fleeGoalFlag;
 	
 	//Constructor
 	public Thief(int[] bountyPosition, Environment environment){
@@ -79,6 +80,7 @@ public class Thief {
 		this.bountyPosition = bountyPosition;
 		this.decisionFlag = true;
 		this.goalFlag = false;
+		this.fleeGoalFlag = false;
 		this.frameID = 0;
 		this.confidence = Constants.CONFIDENCE_MAX;
 		this.bountyDirection = Constants.DONTMOVE;
@@ -103,7 +105,7 @@ public class Thief {
 			
 			Node goal = null;
 			
-			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag);
+			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag, fleeGoalFlag);
 			if(decision == Constants.CONTINUE)
 				return;
 			
@@ -124,6 +126,12 @@ public class Thief {
 			//Setup Path Follower
 			pathFollower.setPath(path);
 		}
+		
+		//Check for Bounty Seen
+		if(environment.checkBountyPositionChanged()){
+			updateBountyPosition(environment.getBountyRelativePosition(), environment.getBountyDirection());
+		}
+				
 	}
 	
 	//Get Next Point
@@ -192,12 +200,6 @@ public class Thief {
 		
 		//Enable Decision Making
 		decisionFlag = true;
-		
-		//Check for Bounty Seen
-		if(environment.checkBountyPositionChanged()){
-			updateBountyPosition(environment.getBountyRelativePosition(), environment.getBountyDirection());
-		}
-		
 	}
 	
 	//Get Coins Collected
@@ -223,6 +225,7 @@ public class Thief {
 		bountyPosition[1] = thiefPosition[1] + relativePosition[1];
 		this.confidence = Constants.CONFIDENCE_MAX;
 		this.bountyDirection = bountyDirection;
+		System.out.println(bountyPosition[0] + ":" + bountyPosition[1]);
 	}
 	
 	/* Decision Functions */
@@ -230,10 +233,15 @@ public class Thief {
 	//Compute a New Goal
 	public Node getNewGoal(int decision){
 		Node goal = null;
-		if(decision ==  Constants.NEWGOAL)
+		if(decision ==  Constants.NEWGOAL){
 			goal = goalDecider.update(bountyPosition, graph.getPosition().getPosition(), this.confidence);
+			this.fleeGoalFlag = false;
+		}
 		else if(decision == Constants.FLEEALERT){
-			goal = fleeGoalDecider.update(bountyPosition);
+			goal = fleeGoalDecider.update(bountyPosition, graph.getPosition().getPosition());
+			System.out.println("FLEE!");
+			System.out.println(goal.toString());
+			this.fleeGoalFlag = true;
 		}
 			
 		return goal;

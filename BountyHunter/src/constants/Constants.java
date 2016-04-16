@@ -66,6 +66,7 @@ public class Constants {
 	
 	//Radiuses
 	public final static int ROVTHIEF = 4;
+	public final static int ROFTHIEF = 2;
 	
 	//Heuristic INFINITY
 	public final static int INFINITY = 500;
@@ -79,4 +80,9 @@ public class Constants {
 	
 	//Prediction Time
 	public final static int PREDICTION_TIME = 3;
+	
+	//Flee Parameters
+	public final static int FLEE_THRESHOLD = 3;
+	public final static float FLEE_PROBABILITY_MAX = 1.f;
+	public final static float FLEE_PROBABILITY_DECAY_RATE = 0.2f;
 }

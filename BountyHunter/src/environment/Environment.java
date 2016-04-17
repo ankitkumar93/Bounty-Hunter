@@ -227,7 +227,7 @@ public class Environment{
 	
 	//Check if the Bounty Hunter is in Range of the Thief
 	private void proximityCheck(){
-		int[] relativePosition = {bountyPosition[0] - thiefPosition[0], bountyPosition[1] - thiefPosition[1]};
+		int[] relativePosition = {Math.abs(bountyPosition[0] - thiefPosition[0]), Math.abs(bountyPosition[1] - thiefPosition[1])};
 		if(relativePosition[0] <= Constants.ROVTHIEF && relativePosition[1] <= Constants.ROVTHIEF){
 			this.bountyLocationUpdated = true;
 		}

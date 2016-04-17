@@ -80,9 +80,12 @@ public class GoalDecider {
 		for(Node target: possibleGoal){
 			int tempDistBounty = getDist(target, bountyPosition);
 			int tempDistThief = getDist(target, thiefPosition);
+			int bountyFactor = 0;
 			if(tempDistBounty == 0)
-				tempDistBounty = Constants.INFINITY;
-			int tempDist = tempDistThief + (weightConst/tempDistBounty);
+				bountyFactor = Constants.INFINITY;
+			else
+				bountyFactor = weightConst/tempDistBounty;
+			int tempDist = tempDistThief + bountyFactor;
 			if(tempDist < minDist){
 				output = target;
 				minDist = tempDist;
@@ -93,7 +96,7 @@ public class GoalDecider {
 	}
 	
 	/* Public Functions */
-	//Copnstructor
+	//Constructor
 	public GoalDecider(Graph graph){
 		
 		//copy parameters

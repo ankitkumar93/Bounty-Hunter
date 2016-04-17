@@ -69,7 +69,7 @@ public class Constants {
 	public final static int ROFTHIEF = 2;
 	
 	//Heuristic INFINITY
-	public final static int INFINITY = 500;
+	public final static int INFINITY = 1000;
 	
 	//Confidence
 	public final static int CONFIDENCE_MAX = 100;

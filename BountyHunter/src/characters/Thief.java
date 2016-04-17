@@ -4,6 +4,7 @@
 
 package characters;
 
+import java.util.Arrays;
 import java.util.List;
 
 import AI.DecisionMaking;
@@ -41,6 +42,9 @@ public class Thief {
 	
 	//Confidence
 	private int confidence;
+	
+	//Probability of Flee
+	private float probabilityFlee;
 	
 	//Frame Data
 	private int frameID;
@@ -84,6 +88,7 @@ public class Thief {
 		this.frameID = 0;
 		this.confidence = Constants.CONFIDENCE_MAX;
 		this.bountyDirection = Constants.DONTMOVE;
+		this.probabilityFlee = Constants.FLEE_PROBABILITY_MAX;
 		
 		//Initialize AI Modules
 		goalDecider = new GoalDecider(graph);
@@ -105,7 +110,7 @@ public class Thief {
 			
 			Node goal = null;
 			
-			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag, fleeGoalFlag);
+			int decision = decisionMaking.update(bountyPosition, graph.getPosition().getPosition(), goalFlag, fleeGoalFlag, probabilityFlee);
 			if(decision == Constants.CONTINUE)
 				return;
 			
@@ -117,8 +122,7 @@ public class Thief {
 			}
 			
 			
-//			if(decision == Constants.FLEEALERT)
-//				System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
+			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
 			
 			//Path Finding
 			List<Node> path = pathFinder.search(goal, bountyPosition, this.bountyDirection, this.confidence);
@@ -221,11 +225,16 @@ public class Thief {
 	//Change Bounty's Local Position
 	private void updateBountyPosition(int[] relativePosition, int bountyDirection){
 		int[] thiefPosition = graph.getPosition().getPosition();
+		int[] bountyPositionOld = bountyPosition.clone();
 		bountyPosition[0] = thiefPosition[0] + relativePosition[0];
 		bountyPosition[1] = thiefPosition[1] + relativePosition[1];
 		this.confidence = Constants.CONFIDENCE_MAX;
 		this.bountyDirection = bountyDirection;
-		System.out.println(bountyPosition[0] + ":" + bountyPosition[1]);
+		if(!Arrays.equals(bountyPositionOld, bountyPosition)){
+			this.probabilityFlee = Constants.FLEE_PROBABILITY_MAX;
+		}else{
+			this.probabilityFlee -= Constants.FLEE_PROBABILITY_DECAY_RATE;
+		}
 	}
 	
 	/* Decision Functions */
@@ -239,8 +248,6 @@ public class Thief {
 		}
 		else if(decision == Constants.FLEEALERT){
 			goal = fleeGoalDecider.update(bountyPosition, graph.getPosition().getPosition());
-			System.out.println("FLEE!");
-			System.out.println(goal.toString());
 			this.fleeGoalFlag = true;
 		}
 			

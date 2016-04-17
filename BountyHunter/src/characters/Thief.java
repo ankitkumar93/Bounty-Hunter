@@ -19,7 +19,7 @@ import environment.Environment;
 
 public class Thief {
 	//Graph
-	private Graph graph;
+	public Graph graph;
 	
 	//Parameters of Game
 	private int coins;
@@ -35,10 +35,10 @@ public class Thief {
 	private int cellHeight;
 	
 	//Last Known Bounty Hunter's Position
-	int[] bountyPosition;
+	public int[] bountyPosition;
 	
 	//Last Known Bounty Hunter's Direction
-	int bountyDirection;
+	public int bountyDirection;
 	
 	//Confidence
 	private int confidence;

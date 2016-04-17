@@ -1,7 +1,6 @@
 package AI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,8 +26,6 @@ public class PathFinder {
 	public List<Node> search(Node target, int[] bountyPosition, int bountyDirection,int confidence){
 		
 		Node source = graph.getPosition();
-		
-		boolean printFlag = false;
 		
 		//Source Node
 		PathNode sourceNode = new PathNode(source);
@@ -58,9 +55,6 @@ public class PathFinder {
 		
 		//Closed List
 		HashSet<Node> cl = new HashSet<Node>();
-		
-		if(Arrays.equals(source.getPosition(), new int[]{0,8}) && Arrays.equals(target.getPosition(), new int[]{2,9}))
-			printFlag = true;
 		
 		while(!ol.isEmpty()){
 			Node currentNode = ol.remove();
@@ -131,9 +125,6 @@ public class PathFinder {
 	
 	//Update the ETC of a PathNode
 	private void updateETC(PathNode dest, PathNode source, int[] bountyPosition, int bountyDirection, int confidence){
-			
-		if(Arrays.equals(dest.node.getPosition(),new int[]{3,9}))
-			System.out.println("H: ");
 		
 		int weight = source.node.getEdgeWeight(dest.node);
 		int heuristic = Heuristic.getHeuristic(bountyPosition, dest.node.getPosition(), bountyDirection, confidence);

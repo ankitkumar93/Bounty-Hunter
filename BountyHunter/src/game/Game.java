@@ -18,6 +18,7 @@ public class Game extends PApplet{
 	private Environment environment;
 	private Thief thief;
 	private BountyHunter bountyHunter;
+	private ThiefVision thiefVision;
 	
 	//Shapes
 	private ThiefShape thiefShape;
@@ -42,7 +43,7 @@ public class Game extends PApplet{
 	
 	/* Processing Data */
 	private final int WINDOW_HEIGHT = 500;
-	private final int WINDOW_WIDTH = 500;
+	private final int WINDOW_WIDTH = 1050;
 	
 	/* Processing Functions */
 	//Settings
@@ -78,6 +79,9 @@ public class Game extends PApplet{
 		totalTime = 0;
 		beginDate = new Date();
 		endDate = null;
+		
+		//Initialize Thief Vision Map
+		thiefVision = new ThiefVision(this, environment.getEnvMap(), thief);
 	}
 	
 	//Draw
@@ -93,6 +97,7 @@ public class Game extends PApplet{
 		
 		//Draw Methods
 		environment.draw();
+		thiefVision.draw();
 		drawThief();
 		drawBountyHunter();
 		
@@ -162,8 +167,17 @@ public class Game extends PApplet{
 	
 	//Draw thief
 	private void drawThief(){
+		
+		//Draw on Main Game
 		pushMatrix();
 		translate(kinematicThief.position.x, kinematicThief.position.y);
+		rotate(kinematicThief.orientation);
+		thiefShape.drawShape();
+		popMatrix();
+		
+		//Draw on Thief Map
+		pushMatrix();
+		translate(kinematicThief.position.x + 550, kinematicThief.position.y);
 		rotate(kinematicThief.orientation);
 		thiefShape.drawShape();
 		popMatrix();

@@ -195,6 +195,12 @@ public class Graph {
 		}
 	}
 	
+	/* Map Check */
+	public boolean isInMap(int x, int y){
+		CoordHolder checkCoord = new CoordHolder(x, y);
+		return nodeMap.containsKey(checkCoord);
+	}
+	
 	/* Coordinate Index Conversions */
 	private int[] coordToIndex(int[] coord, int[] offset){
 		int output[] = {coord[1] + offset[1], coord[0] + offset[0]};

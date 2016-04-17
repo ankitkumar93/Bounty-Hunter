@@ -50,12 +50,15 @@ public class Constants {
 	public static final int CONTINUE = 1;
 	public static final int NEWGOAL = 2;
 	
+	/* Graph Parameters */
+	public static final int MEMORYMAP_X_TRANS = 550;
+	public static final int HARDCODED_GRAPH_SIZE = 10;
 	
 	/* Tunable Parameters */
 	
 	//Max Velocities
-	public final static int MVTHIEF = 10;
-	public final static int MVBOUNTYHUNTER = 10;
+	public final static int MVTHIEF = 2;
+	public final static int MVBOUNTYHUNTER = 2;
 	
 	//Max Rotation
 	public final static float MRTHIEF = (float)(Math.PI/20);

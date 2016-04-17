@@ -54,8 +54,8 @@ public class Constants {
 	/* Tunable Parameters */
 	
 	//Max Velocities
-	public final static int MVTHIEF = 2;
-	public final static int MVBOUNTYHUNTER = 2;
+	public final static int MVTHIEF = 10;
+	public final static int MVBOUNTYHUNTER = 10;
 	
 	//Max Rotation
 	public final static float MRTHIEF = (float)(Math.PI/20);

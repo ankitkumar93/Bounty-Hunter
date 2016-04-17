@@ -8,7 +8,7 @@ import constants.Constants;
 public class Heuristic {
 	public static int getHeuristic(int[] bountyPosition, int[] nodePosition, int bountyDirection, int confidence){
 		int weightConst = Constants.COLLISION_CONTROL*confidence/100;
-		int distance = getDist(nodePosition, bountyPosition, bountyDirection);
+		int distance = getDist(bountyPosition, nodePosition, bountyDirection);
 		if(distance != 0)
 			return (weightConst/distance);
 		else

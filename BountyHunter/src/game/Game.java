@@ -1,5 +1,11 @@
 package game;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Date;
 
 import behavior.SeekAlign;
@@ -40,6 +46,9 @@ public class Game extends PApplet{
 	private Date beginDate;
 	private Date endDate;
 	
+	//Traversal Data
+	private int nodesTraversed;
+	
 	
 	/* Processing Data */
 	private final int WINDOW_HEIGHT = 500;
@@ -67,6 +76,9 @@ public class Game extends PApplet{
 		//Initialize Coins
 		totalCoins = environment.getCoins();
 		
+		//Initialize Nodes Traversed
+		nodesTraversed = 0;
+		
 		//Initialize Kinematic DS
 		kinematicBounty = new KinematicDS(bountyPosition, Constants.BOUNTYHUNTERRORIENTATION);
 		kinematicThief = new KinematicDS(thiefPosition, Constants.THIEFORIENTATION);
@@ -86,7 +98,7 @@ public class Game extends PApplet{
 	
 	//Draw
 	public void draw(){
-		background(255);
+		background(Constants.BGCOLOR);
 		
 		//Updations
 		thief.update();
@@ -107,6 +119,9 @@ public class Game extends PApplet{
 			totalTime = (int)(endDate.getTime() - beginDate.getTime());
 			System.out.println("Coins Collected: " + thief.getCoins());
 			System.out.println("Time Passed: " + totalTime);
+			System.out.println("Nodes Traversed: " + nodesTraversed);
+			
+			writeToFile(thief.getCoins(), totalTime, nodesTraversed);
 			noLoop();
 		}
 	}
@@ -142,6 +157,7 @@ public class Game extends PApplet{
 		if(newX == target[0] && newY == target[1]){
 			thief.move(target);
 			thiefPosition = environment.getThiefPosition();
+			nodesTraversed += 1;
 		}
 	}
 	
@@ -202,6 +218,25 @@ public class Game extends PApplet{
 			return true;
 			
 		return false;
+	}
+	
+	//Write to File
+	private void writeToFile(int coinsW, int timeW, int distW){
+		FileWriter outFile;
+		BufferedWriter outBuf;
+		PrintWriter outPrint;
+		
+		try{
+			outFile = new FileWriter(Constants.LOG_FILE, true);
+			outBuf = new BufferedWriter(outFile);
+			outPrint = new PrintWriter(outBuf);
+			outPrint.println(Constants.ROVTHIEF + "," + Constants.ROFTHIEF + "," + Constants.PREDICTION_TIME + "," + coinsW + "," + timeW + "," + distW);
+			outPrint.close();
+			outBuf.close();
+			outFile.close();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	/* Main */

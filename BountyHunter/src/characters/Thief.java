@@ -122,7 +122,7 @@ public class Thief {
 			}
 			
 			
-			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
+//			System.out.println("Frame: " + frameID + " Goal :" + goal.toString());
 			
 			//Path Finding
 			List<Node> path = pathFinder.search(goal, bountyPosition, this.bountyDirection, this.confidence);
@@ -230,9 +230,6 @@ public class Thief {
 		bountyPosition[1] = thiefPosition[1] + relativePosition[1];
 		this.confidence = Constants.CONFIDENCE_MAX;
 		this.bountyDirection = bountyDirection;
-		System.out.println("THIEF: " + thiefPosition[0] + ":" + thiefPosition[1]);
-		System.out.println("BH: " + bountyPosition[0] + ":" + bountyPosition[1]);
-		System.out.println("REL: " + relativePosition[0] + ":" + relativePosition[1]);
 		if(!Arrays.equals(bountyPositionOld, bountyPosition)){
 			this.probabilityFlee = Constants.FLEE_PROBABILITY_MAX;
 		}else{

@@ -38,6 +38,8 @@ public class Constants {
 	public final static int MOVEUP = 2;
 	public final static int MOVEDOWN = 3;
 	
+	/* Game Visual Data */
+	public static final int BGCOLOR = 125;
 	
 	/* Character Parameters */
 	public static final int[] THIEFPOS = {0,0};
@@ -68,8 +70,8 @@ public class Constants {
 	public final static int PREDICTIONTI = 1;
 	
 	//Radiuses
-	public final static int ROVTHIEF = 4;
-	public final static int ROFTHIEF = 2;
+	public final static int ROVTHIEF = 6;
+	public final static int ROFTHIEF = 4;
 	
 	//Heuristic INFINITY
 	public final static int INFINITY = 1000;
@@ -82,10 +84,13 @@ public class Constants {
 	public final static int COLLISION_CONTROL = 50;
 	
 	//Prediction Time
-	public final static int PREDICTION_TIME = 3;
+	public final static int PREDICTION_TIME = 4;
 	
 	//Flee Parameters
 	public final static int FLEE_THRESHOLD = 3;
 	public final static float FLEE_PROBABILITY_MAX = 1.f;
 	public final static float FLEE_PROBABILITY_DECAY_RATE = 0.2f;
+	
+	/* Logging Data */
+	public final static String LOG_FILE = "data/log.txt";
 }
